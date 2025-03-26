@@ -1,0 +1,6 @@
+streamlit
+openai
+numpy
+faiss-cpu
+python-dotenv
+geopy
