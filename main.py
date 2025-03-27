@@ -5,7 +5,8 @@ import re
 import base64
 from dotenv import load_dotenv, find_dotenv
 import numpy as np
-import faiss
+import faiss_cpu as faiss
+
 
 # Load environment variables
 _ = load_dotenv(find_dotenv())
