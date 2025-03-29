@@ -1,2 +1,4 @@
-[ui]
-hideStreamlitBranding = true
+[server]
+headless = true
+enableCORS = false
+enableXsrfProtection = false
