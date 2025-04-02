@@ -399,7 +399,7 @@ Why Choose TerraPeak as Your Partner:
 # OpenAI Communication Function (uses Chat API)
 # ===========================
 def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperature=0):
-    client = openai.OpenAI()
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     messages = st.session_state.chat_context + user_messages
     response = client.chat.completions.create(model=model, messages=messages, temperature=temperature)
     return response.choices[0].message.content
