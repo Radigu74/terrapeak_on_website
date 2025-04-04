@@ -8,6 +8,9 @@ import faiss
 import pycountry
 import csv
 
+# IMPORT the CSV-logging function from log_backend
+from log_backend import save_user_data
+
 # Load environment variables
 _ = load_dotenv(find_dotenv())
 
@@ -16,16 +19,6 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # For debugging purposes
 print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
-
-# Hide Streamlit's default menu, header, and footer
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
 
     # ============================================================
 # STEP 1: Define and Store Your Articles (RAG Source)
@@ -347,39 +340,17 @@ def validate_and_start():
     if not is_valid_phone(phone):
         return "❌ Invalid phone number."
     st.session_state.chat_enabled = True
+
+       # LOG USER DATA HERE
+    save_user_data(
+        name=name        
+        email=email,
+        phone=phone,
+        country=country
+            
     return "✅ **Details saved!**"
 
-# -----------------------------
-# Function to Append Customer Details to a CSV File
-# -----------------------------
-def append_to_csv(name, email, phone, country, 
-                  file_path=r"C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"):
-    # Ensure the directory exists
-    directory = os.path.dirname(file_path)
-    if directory and not os.path.exists(directory):
-        os.makedirs(directory)
-    
-    # Check if the file exists (or is empty)
-    file_exists = os.path.exists(file_path)
-    
-    # Open the file in append mode (it will create the file if it doesn't exist)
-    with open(file_path, 'a', newline='', encoding='utf-8') as csvfile:
-        writer = csv.writer(csvfile)
-        # If the file does not exist or is empty, write the header row first
-        if not file_exists or os.stat(file_path).st_size == 0:
-            writer.writerow(["Name", "Email", "Phone", "Country"])
-        # Append the new customer details
-        writer.writerow([name, email, phone, country])
 
-
-# Example usage when the submit button is clicked
-if st.button("Submit Details", key="submit_button"):
-    validation_message = validate_and_start()
-    st.markdown(validation_message, unsafe_allow_html=True)
-    # If validation is successful, update the CSV file
-    if validation_message.startswith("✅"):
-        file_path = r"C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"
-        append_to_csv(name, email, phone, country, file_path)
 # ===========================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
 # ===========================
