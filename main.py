@@ -214,10 +214,18 @@ st.markdown(
 # ===========================
 # CUSTOM UI: Header with a grey box around the title
 # ===========================
+def get_base64(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+icon_base64 = get_base64("icon.png")
+
 st.markdown(
-    """
+    f"""
     <div style="background-color: #E0E0DB; padding: 10px; border-radius: 10px; text-align: center;">
-        <h1 style="color: #2f5d50; font-family: sans-serif;">
+        <img src="data:image/png;base64,{icon_base64}" width="400" style="vertical-align: middle;" alt="Customer Service Icon">
+        <h1 style="display: inline; color: #2f5d50; font-family: sans-serif; margin-left: 10px;">
             Charting your way to success
         </h1>
     </div>
