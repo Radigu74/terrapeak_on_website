@@ -390,12 +390,12 @@ st.markdown(
     <style>
     /* This moves the header text upward */
     .contact-header {
-        margin-top: -50px;
+        margin-top: -60px;
         padding-top: 0;
     }
     /* This moves the input fields upward */
     .contact-form {
-        margin-top: -90px;  /* Adjust this value as needed */
+        margin-top: -100px;  /* Adjust this value as needed */
     }
     </style>
     """,
@@ -415,16 +415,6 @@ country_list = sorted([country.name for country in pycountry.countries])
 country = st.selectbox("Select Country", country_list, key="country_dropdown")
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-
-# Instead of st.header or st.markdown alone, wrap the contact text in a div with your custom class:
-st.markdown('<div class="contact-header">📢 <strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
-
-name = st.text_input("Enter your name:", key="name_input")
-email = st.text_input("Enter your email:", key="email_input")
-phone = st.text_input("Enter your phone number:", key="phone_input")
-country_list = sorted([country.name for country in pycountry.countries])
-country = st.selectbox("Select Country", country_list, key="country_dropdown")
 
 def is_valid_email(email):
     return re.match(r"[^@]+@[^@]+\.[^@]+", email)
