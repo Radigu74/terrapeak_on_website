@@ -138,7 +138,7 @@ def build_prompt_with_context(user_query, k=2):
 # ============================================================
 
 # ===========================
-# CUSTOM UI: Inject custom CSS for styling using Nitti colors (bright yellow, white, and black)
+# CUSTOM UI: Inject custom CSS for styling using Terrapeak colors 
 # ===========================
 st.markdown(
     """
@@ -208,20 +208,6 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True,
-)
-
-# ===========================
-# CUSTOM UI: Header with a grey box around the title
-# ===========================
-st.markdown(
-    """
-    <div style="background-color: #E0E0DB; padding: 10px; border-radius: 10px; text-align: center;">
-        <h1 style="color: #2f5d50; font-family: sans-serif;">
-            Charting your way to success
-        </h1>
-    </div>
-    """,
-    unsafe_allow_html=True
 )
 
 # ===========================
