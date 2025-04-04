@@ -385,7 +385,20 @@ def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperatu
 # ===========================
 # User Details Input
 # ===========================
-st.markdown("📢 **Enter your contact details before chatting with our AI assistant:**")
+st.markdown(
+    """
+    <style>
+    .contact-header {
+        margin-top: -20px;  /* Moves the text upward */
+        padding-top: 0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Instead of st.header or st.markdown alone, wrap the contact text in a div with your custom class:
+st.markdown('<div class="contact-header">📢 <strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
 
 name = st.text_input("Enter your name:", key="name_input")
 email = st.text_input("Enter your email:", key="email_input")
