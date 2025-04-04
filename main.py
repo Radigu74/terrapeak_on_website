@@ -347,6 +347,7 @@ def validate_and_start():
         email=email,
         phone=phone,
         country=country
+    )
             
     return "✅ **Details saved!**"
 
