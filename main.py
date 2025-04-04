@@ -6,6 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 import numpy as np
 import faiss
 import pycountry
+import csv
 
 
 # Load environment variables
@@ -430,9 +431,27 @@ def validate_and_start():
     st.session_state.chat_enabled = True
     return "✅ **Details saved!**"
 
+# -----------------------------
+# Function to Append Customer Details to a CSV File
+# -----------------------------
+def append_to_csv(name, email, phone, country, file_path="C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"):
+    file_exists = os.path.isfile(file_path)
+    with open(file_path, "a", newline="", encoding="utf-8") as csvfile:
+        fieldnames = ["name", "email", "phone", "country"]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        # Write header if file does not exist yet
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow({"name": name, "email": email, "phone": phone, "country": country})
+
 if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
     st.markdown(validation_message, unsafe_allow_html=True)
+    # If validation is successful, update the CSV file
+    if validation_message.startswith("✅"):
+        # Use an absolute or relative path to your project folder
+        file_path = "C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"  # This file will be created in the current working directory (your project folder)
+        append_to_csv(name, email, phone, country, file_path)
 
 # ===========================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
