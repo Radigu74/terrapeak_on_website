@@ -8,7 +8,7 @@ def save_user_data(name, email, phone, country):
     """
     file_exists = os.path.isfile('user_logs.csv')
     with open('user_logs.csv', mode='a', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['email', 'phone', 'postal_code', 'country']
+        fieldnames = ['name', 'email', 'phone', 'country']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         if not file_exists:
