@@ -388,14 +388,34 @@ def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperatu
 st.markdown(
     """
     <style>
+    /* This moves the header text upward */
     .contact-header {
-        margin-top: -20px;  /* Moves the text upward */
+        margin-top: -40px;
         padding-top: 0;
+    }
+    /* This moves the input fields upward */
+    .contact-form {
+        margin-top: -80px;  /* Adjust this value as needed */
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
+# Header text moved upward by the .contact-header class
+st.markdown('<div class="contact-header">📢 <strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
+
+# Wrap the input fields in a container with the .contact-form class
+st.markdown('<div class="contact-form">', unsafe_allow_html=True)
+
+name = st.text_input("Enter your name:", key="name_input")
+email = st.text_input("Enter your email:", key="email_input")
+phone = st.text_input("Enter your phone number:", key="phone_input")
+country_list = sorted([country.name for country in pycountry.countries])
+country = st.selectbox("Select Country", country_list, key="country_dropdown")
+
+st.markdown('</div>', unsafe_allow_html=True)
+
 
 # Instead of st.header or st.markdown alone, wrap the contact text in a div with your custom class:
 st.markdown('<div class="contact-header">📢 <strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
