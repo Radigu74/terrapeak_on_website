@@ -395,7 +395,7 @@ st.markdown(
     }
     /* This moves the input fields upward */
     .contact-form {
-        margin-top: -100px;  /* Adjust this value as needed */
+        margin-top: 0px;  /* Adjust this value as needed */
     }
     </style>
     """,
