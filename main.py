@@ -42,7 +42,7 @@ articles = [
     - Revenue-Driven Sales Growth
     - Seamless AI Integration
     - Family Business Growth & Transformation
-    Committed to responsible, ethical, and sustainable growth, TerraPeak offers tailored solutions ensuring long-term success and resilience. Businesses seeking expansion, transformation, and innovation are encouraged to reach out via enquiry@terrapeak.com.
+    Committed to responsible, ethical, and sustainable growth, TerraPeak offers tailored solutions ensuring long-term success and resilience. Businesses seeking expansion, transformation, and innovation are encouraged to reach out via connect@terrapeakgroup.com.
     """,
     """
     Unlocking Opportunities: Doing Business in Asia for Western Companies
