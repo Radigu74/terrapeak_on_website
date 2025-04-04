@@ -392,7 +392,10 @@ def validate_and_start():
             
     return "✅ **Details saved!**"
 
-
+if st.button("Submit Details", key="submit_button"):
+    validation_message = validate_and_start()
+    st.markdown(validation_message, unsafe_allow_html=True)
+    
 # ===========================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
 # ===========================
