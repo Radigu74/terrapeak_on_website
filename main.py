@@ -388,6 +388,7 @@ def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperatu
 st.header("Welcome to Terrapeak AI Assistance")
 st.markdown("📢 **Enter your contact details before chatting:**")
 
+name = st.text_input("Enter your name:", key="name_input")
 email = st.text_input("Enter your email:", key="email_input")
 phone = st.text_input("Enter your phone number:", key="phone_input")
 country_list = sorted([country.name for country in pycountry.countries])
