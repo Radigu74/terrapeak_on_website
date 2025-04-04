@@ -3,3 +3,4 @@ faiss-cpu
 openai==1.65.4
 python-dotenv==1.0.1
 streamlit==1.43.0
+pycountry
