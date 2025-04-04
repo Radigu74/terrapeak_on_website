@@ -4,7 +4,8 @@ import streamlit as st
 import re
 from dotenv import load_dotenv, find_dotenv
 import numpy as np
-import faiss
+import fais
+import pycountry
 
 
 # Load environment variables
@@ -389,7 +390,8 @@ st.markdown("📢 **Enter your contact details before chatting:**")
 
 email = st.text_input("Enter your email:", key="email_input")
 phone = st.text_input("Enter your phone number:", key="phone_input")
-country = st.selectbox("Select Country", ["Singapore", "Malaysia", "Indonesia"], key="country_dropdown")
+country_list = sorted([country.name for country in pycountry.countries])
+country = st.selectbox("Select Country", country_list, key="country_dropdown")
 
 def is_valid_email(email):
     return re.match(r"[^@]+@[^@]+\.[^@]+", email)
