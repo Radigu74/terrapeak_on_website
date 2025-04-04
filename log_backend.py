@@ -1,7 +1,7 @@
 import csv
 import os
 
-def save_user_data(email, phone, postal_code, country):
+def save_user_data(name, email, phone, country):
     """
     Saves the user details into a CSV file called 'user_logs.csv'.
     If it doesn't exist, we create it; if it does, we append a new row.
@@ -17,8 +17,8 @@ def save_user_data(email, phone, postal_code, country):
 
         # Write the actual user data
         writer.writerow({
+            'name': name,
             'email': email,
             'phone': phone,
-            'postal_code': postal_code,
             'country': country
         })
