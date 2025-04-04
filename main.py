@@ -434,7 +434,7 @@ def validate_and_start():
 # -----------------------------
 # Function to Append Customer Details to a CSV File
 # -----------------------------
-def append_to_csv(name, email, phone, country, file_path="C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"):
+def append_to_csv(name, email, phone, country, file_path="C:\\Users\\ray\\Terrapeak\\Chatbot\\Terrapeak_website_bot\\terrapeak_chatbot\\Chatbot Leads\\customer_details.csv"):
     file_exists = os.path.isfile(file_path)
     with open(file_path, "a", newline="", encoding="utf-8") as csvfile:
         fieldnames = ["name", "email", "phone", "country"]
@@ -450,7 +450,7 @@ if st.button("Submit Details", key="submit_button"):
     # If validation is successful, update the CSV file
     if validation_message.startswith("✅"):
         # Use an absolute or relative path to your project folder
-        file_path = "C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"  # This file will be created in the current working directory (your project folder)
+        file_path = "C:\\Users\\ray\\Terrapeak\\Chatbot\\Terrapeak_website_bot\\terrapeak_chatbot\\Chatbot Leads\\customer_details.csv"  # This file will be created in the current working directory (your project folder)
         append_to_csv(name, email, phone, country, file_path)
 
 # ===========================
