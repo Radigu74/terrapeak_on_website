@@ -389,7 +389,7 @@ st.markdown(
     """
     <style>
     .contact-header {
-        margin-top: -40px;  /* Moves the text upward */
+        margin-top: -140px;  /* Moves the text upward */
         padding-top: 0;
     }
     </style>
