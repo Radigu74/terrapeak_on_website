@@ -4,7 +4,7 @@ import streamlit as st
 import re
 from dotenv import load_dotenv, find_dotenv
 import numpy as np
-import fais
+import faiss
 import pycountry
 
 
