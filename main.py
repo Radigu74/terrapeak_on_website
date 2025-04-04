@@ -435,25 +435,30 @@ def validate_and_start():
 # -----------------------------
 def append_to_csv(name, email, phone, country, 
                   file_path=r"C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"):
+    # Ensure the directory exists
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
     # Check if the file exists
     file_exists = os.path.exists(file_path)
     
-    # Open the file in append mode, create it if it doesn't exist
+    # Open the file in append mode (it will create the file if it doesn't exist)
     with open(file_path, 'a', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
-        # If the file does not exist, write the header row first
-        if not file_exists:
+        # If the file does not exist or is empty, write the header row first
+        if not file_exists or os.stat(file_path).st_size == 0:
             writer.writerow(["Name", "Email", "Phone", "Country"])
         # Append the new customer details
         writer.writerow([name, email, phone, country])
-      
+
+# Example usage when the submit button is clicked
 if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
     st.markdown(validation_message, unsafe_allow_html=True)
     # If validation is successful, update the CSV file
     if validation_message.startswith("✅"):
-        # Use an absolute or relative path to your project folder
-        file_path = "C:\\Users\\ray\\Terrapeak\\Chatbot\\Terrapeak_website_bot\\terrapeak_chatbot\\Chatbot Leads\\customer_details.csv"  # This file will be created in the current working directory (your project folder)
+        file_path = r"C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"
         append_to_csv(name, email, phone, country, file_path)
 
 # ===========================
