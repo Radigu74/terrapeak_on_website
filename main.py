@@ -343,7 +343,7 @@ def validate_and_start():
 
        # LOG USER DATA HERE
     save_user_data(
-        name=name        
+        name=name,        
         email=email,
         phone=phone,
         country=country
