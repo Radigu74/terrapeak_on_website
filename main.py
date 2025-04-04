@@ -8,6 +8,19 @@ import faiss
 import pycountry
 import csv
 
+def append_to_csv(name, email, phone, country, 
+                  file_path=r"C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"):
+    # Check if the file exists
+    file_exists = os.path.exists(file_path)
+    
+    # Open the file in append mode, create it if it doesn't exist
+    with open(file_path, 'a', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        # If the file does not exist, write the header row first
+        if not file_exists:
+            writer.writerow(["Name", "Email", "Phone", "Country"])
+        # Append the new customer details
+        writer.writerow([name, email, phone, country])
 
 # Load environment variables
 _ = load_dotenv(find_dotenv())
