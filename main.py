@@ -384,7 +384,7 @@ def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperatu
 # ===========================
 # User Details Input
 # ===========================
-st.title("Welcome to Terrapeak AI Assistance")
+st.header("Welcome to Terrapeak AI Assistance")
 st.markdown("📢 **Enter your contact details before chatting:**")
 
 email = st.text_input("Enter your email:", key="email_input")
