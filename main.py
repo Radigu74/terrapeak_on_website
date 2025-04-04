@@ -437,10 +437,10 @@ def append_to_csv(name, email, phone, country,
                   file_path=r"C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"):
     # Ensure the directory exists
     directory = os.path.dirname(file_path)
-    if not os.path.exists(directory):
+    if directory and not os.path.exists(directory):
         os.makedirs(directory)
     
-    # Check if the file exists
+    # Check if the file exists (or is empty)
     file_exists = os.path.exists(file_path)
     
     # Open the file in append mode (it will create the file if it doesn't exist)
@@ -452,6 +452,7 @@ def append_to_csv(name, email, phone, country,
         # Append the new customer details
         writer.writerow([name, email, phone, country])
 
+
 # Example usage when the submit button is clicked
 if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
@@ -460,7 +461,6 @@ if st.button("Submit Details", key="submit_button"):
     if validation_message.startswith("✅"):
         file_path = r"C:\Users\ray\Terrapeak\Chatbot\Terrapeak_website_bot\terrapeak_chatbot\Chatbot Leads\customer_details.csv"
         append_to_csv(name, email, phone, country, file_path)
-
 # ===========================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
 # ===========================
