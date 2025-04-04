@@ -390,12 +390,12 @@ st.markdown(
     <style>
     /* This moves the header text upward */
     .contact-header {
-        margin-top: -60px;
+        margin-top: -80px;
         padding-top: 0;
     }
     /* This moves the input fields upward */
     .contact-form {
-        margin-top: -100px;  /* Adjust this value as needed */
+        margin-top: -120px;  /* Adjust this value as needed */
     }
     </style>
     """,
