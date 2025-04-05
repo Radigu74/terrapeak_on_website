@@ -375,7 +375,7 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 # ==============================================
 # OpenAI Communication Function (uses Chat API)
 # ==============================================
-def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature=0):
+def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature=0, max_history=6):
     try:
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
@@ -383,12 +383,16 @@ def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature
 
         client = openai.OpenAI(api_key=api_key)
 
-        messages = st.session_state.chat_context + user_messages
+        # Retain the system prompt and only the last few interactions to reduce token bloat
+        preserved_context = [m for m in st.session_state.chat_context if m["role"] == "system"]
+        recent_history = st.session_state.chat_context[-max_history:]
+        messages = preserved_context + recent_history + user_messages
+
         response = client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=temperature,
-            timeout=15  # seconds – adjust as needed
+            timeout=15  # Set a timeout (in seconds) to avoid long hangs
         )
 
         return response.choices[0].message.content
