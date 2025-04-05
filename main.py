@@ -97,7 +97,9 @@ def get_embedding(text, model="text-embedding-ada-002"):
 # ============================================================
 # Generate embeddings for each article
 article_embeddings = [
-    get_embedding(article) for article in articles if article and article.strip()
+    get_embedding(article["content"])
+    for article in articles
+    if article.get("content") and isinstance(article["content"], str) and article["content"].strip()
 ]
 
 # Determine the dimensionality of the embeddings
