@@ -516,29 +516,19 @@ if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
     except Exception as e:
         st.error(f"Error reading the file: {e}")
 
-# --- Chat Section (only runs if chat is enabled) ---
-if st.session_state.get("chat_enabled", False):
-    # Create the chat input field
-    user_input = st.text_input("Type your message here...", key=f"chat_input_{st.session_state.get('chat_input_key', 0)}", value="")
-    
-    # When the user clicks the "Send" button, process the input
-    if st.button("Send", key="send_button"):
-        if user_input.strip():
-            # Append the original user message to chat history.
-            st.session_state.chat_history.append({"role": "user", "content": user_input.strip()})
             
-            # ============================================================
-            # RAG Integration: Build a prompt with relevant article context
-            # ============================================================
-            rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
-            print("RAG Prompt:\n", rag_prompt)
+# ============================================================
+# RAG Integration: Build a prompt with relevant article context
+# ============================================================
+rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
+print("RAG Prompt:\n", rag_prompt)
             
-            # Use the RAG prompt as the user message for the chat completion.
-            response = get_completion_from_messages([{"role": "user", "content": rag_prompt}])
+# Use the RAG prompt as the user message for the chat completion.
+response = get_completion_from_messages([{"role": "user", "content": rag_prompt}])
             
-            # Append the bot's response to chat history.
-            st.session_state.chat_history.append({"role": "assistant", "content": response})
-            st.session_state.chat_input_key = st.session_state.get("chat_input_key", 0) + 1
+# Append the bot's response to chat history.
+st.session_state.chat_history.append({"role": "assistant", "content": response})
+st.session_state.chat_input_key = st.session_state.get("chat_input_key", 0) + 1
             
-            # Rerun the app to update the UI.
-            st.rerun()
+# Rerun the app to update the UI.
+st.rerun()
