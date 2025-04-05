@@ -126,13 +126,15 @@ def retrieve_relevant_articles(query, k=2):
 def build_prompt_with_context(user_query, k=2):
     """
     Build a prompt that includes relevant context from retrieved articles along with the user query.
+    This version uses a clear system instruction format to help GPT understand how to use the context.
     """
     indices, _ = retrieve_relevant_articles(user_query, k)
-    # Combine the texts of the retrieved articles into one context string
     context = "\n\n".join([articles[i] for i in indices])
+
     prompt = (
+        f"You are an expert business consultant at TerraPeak. Use the context below to help answer the user's question.\n\n"
         f"Relevant Context:\n{context}\n\n"
-        f"User Query: {user_query}\n\n"
+        f"User Question: {user_query}\n\n"
         f"Answer:"
     )
     return prompt
