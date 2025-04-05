@@ -37,9 +37,9 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # ============================================================
 # Your optimized TerraPeak launch article is stored here.
 articles = [
-    """
-    TerraPeak Consulting Officially Launches to Guide Businesses Toward Market Expansion, Sales Growth, and AI Integration
-    March 5, 2025 – Singapore
+    {
+        "title": "TerraPeak Official Launch",
+        "content": """March 5, 2025 – Singapore        
     TerraPeak Consulting officially launches, offering expert-led market expansion, sales growth strategies, and practical AI integration to global businesses. Specializing in APAC market entry and growth support for Asian SMEs and family businesses, TerraPeak aims to redefine strategic growth.
     Founded by experienced market and sales strategists, TerraPeak combines exploration with sustainable, strategic growth. With proven expertise, TerraPeak guides companies in harnessing AI to improve sales and operational efficiency.
     Core Offerings:
@@ -47,30 +47,30 @@ articles = [
     - Revenue-Driven Sales Growth
     - Seamless AI Integration
     - Family Business Growth & Transformation
-    Committed to responsible, ethical, and sustainable growth, TerraPeak offers tailored solutions ensuring long-term success and resilience. Businesses seeking expansion, transformation, and innovation are encouraged to reach out via connect@terrapeakgroup.com.
-    """,
-    """
-    Unlocking Opportunities: Doing Business in Asia for Western Companies
-    Asia's markets are diverse, each with distinct cultures, regulations, and consumer preferences. Successful market entry requires careful planning and cultural understanding.
+    Committed to responsible, ethical, and sustainable growth, TerraPeak offers tailored solutions ensuring long-term success and resilience. Businesses seeking expansion, transformation, and innovation are encouraged to reach out via connect@terrapeakgroup.com."""
+    },
+    {
+        "title": "Unlocking Opportunities: A Guide to Doing Business in Asia",
+        "content": """Asia’s markets are diverse, each with distinct cultures, regulations, and consumer preferences. Successful market entry requires careful planning and cultural understanding.
     1. Recognize Diversity: Each Asian market differs significantly. Independent research on consumer preferences, economic conditions, and regulatory landscapes is crucial.
     2. Understand Cultural Nuances: Personal relationships and trust-building are essential. Face-to-face interactions and awareness of local business etiquette enhance partnership opportunities.
     3. Navigate Regulations: Legal frameworks vary widely. Consulting local legal experts helps ensure compliance and protection, particularly for intellectual property rights.
     4. Adapt Products and Services: Localization involves more than translation; products, pricing strategies, and marketing channels should align with local tastes and usage patterns.
     5. Leverage Local Partnerships: Strategic partnerships offer invaluable market insights, reduce entry costs, and minimize risks associated with unfamiliar markets.
     6. Invest in Talent and Training: Hiring skilled local talent and providing basic cross-cultural training ensures smooth operations and effective market penetration.
-    7. Stay Agile and Innovative: Regularly reassessing market trends and technological advancements allows businesses to remain competitive and responsive in dynamic Asian markets.
-    """,
-    """
-    AI & SMEs: Key Trends, Challenges, and Opportunities
-    AI is rapidly changing how SMEs and family businesses operate, offering significant productivity gains, enhanced customer engagement, and cost efficiencies. Adoption among SMEs is growing quickly, with many businesses already using AI-powered solutions like chatbots, social media automation, and generative AI.
+    7. Stay Agile and Innovative: Regularly reassessing market trends and technological advancements allows businesses to remain competitive and responsive in dynamic Asian markets."""
+    },
+    {
+        "title": "AI & SMEs: 10 Key Stats Revealing Growth, Challenges, and Opportunities",
+        "content": """Artificial Intelligence (AI) is rapidly changing how SMEs and family businesses operate, offering significant productivity gains, enhanced customer engagement, and cost efficiencies. Adoption among SMEs is growing quickly, with many businesses already using AI-powered solutions like chatbots, social media automation, and generative AI.
     SMEs widely recognize AI’s benefits, including improved efficiency, automated marketing, sales forecasting, and better customer service. However, common concerns include knowledge gaps, high initial costs, uncertainty about return on investment (ROI), cybersecurity, and data privacy.
     Practical, user-friendly AI solutions designed specifically for SMEs are making adoption easier. Cloud-based AI services (AI-as-a-Service) and generative AI tools have increased accessibility, allowing SMEs to automate processes, create engaging content, and enhance productivity without large upfront investments.
     To fully leverage AI’s potential, SMEs should:
     - Develop clear AI adoption strategies and roadmaps.
     - Establish measurable KPIs to track AI effectiveness.
     - Use cost-effective AI tools tailored to their specific business needs.
-    SMEs strategically adopting AI gain a competitive edge, achieve sustainable growth, and drive long-term efficiency.
-    """
+    SMEs strategically adopting AI gain a competitive edge, achieve sustainable growth, and drive long-term efficiency."""
+    }
 ]
 
 # ============================================================
@@ -134,18 +134,26 @@ def retrieve_relevant_articles(query, k=2):
 # ============================================================
 def build_prompt_with_context(user_query, k=2):
     """
-    Build a prompt that includes relevant context from retrieved articles along with the user query.
-    This version uses a clear system instruction format to help GPT understand how to use the context.
+    Build a prompt that includes relevant article context with labeled sources for better grounding.
     """
     indices, _ = retrieve_relevant_articles(user_query, k)
-    context = "\n\n".join([articles[i] for i in indices])
-
+    
+    labeled_contexts = []
+    for i in indices:
+        article = articles[i]
+        labeled_context = f"Source: {article['title']}\n{article['content']}"
+        labeled_contexts.append(labeled_context)
+    
+    full_context = "\n\n".join(labeled_contexts)
+    
     prompt = (
-        f"You are an expert business consultant at TerraPeak. Use the context below to help answer the user's question.\n\n"
-        f"Relevant Context:\n{context}\n\n"
+        f"You are an AI assistant responding to the user's question using the most relevant context below.\n"
+        f"Use the sources to support your answer clearly.\n\n"
+        f"{full_context}\n\n"
         f"User Question: {user_query}\n\n"
         f"Answer:"
     )
+    
     return prompt
 
 # ============================================================
