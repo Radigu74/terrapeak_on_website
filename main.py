@@ -481,26 +481,55 @@ with st.container():
 
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
-# =============================================
+# ============================================
 if "chat_input_key" not in st.session_state:
     st.session_state.chat_input_key = 0
 
 if st.session_state.chat_enabled:
+    # Create the chat input field with a unique key
     user_input = st.text_input(
         "Type your message here...",
         key=f"chat_input_{st.session_state.chat_input_key}",
         value=""
     )
-
+    
+    # Process the message when the Send button is pressed
     if st.button("Send", key="send_button"):
         if user_input.strip():
-            # Append the original user message to chat history.
-            st.session_state.chat_history.append({"role": "user", "content": user_input.strip()})
+            # Append the user's message to chat history.
+            st.session_state.chat_history.append({
+                "role": "user",
+                "content": user_input.strip()
+            })
+            
+            # ============================================================
+            # RAG Integration: Build a prompt with relevant article context
+            # ============================================================
+            rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
+            print("RAG Prompt:\n", rag_prompt)
+            
+            # Get the assistant's response using the prompt.
+            response = get_completion_from_messages([{
+                "role": "user",
+                "content": rag_prompt
+            }])
+            
+            # Append the assistant's response to chat history.
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "content": response
+            })
+            
+            # Increment the chat input key to ensure unique keys for the next input.
+            st.session_state.chat_input_key += 1
+            
+            # Rerun the app to update the UI.
+            st.rerun()
 
 # ===========================================================================
 # Admin download section – only visible when the correct password is entered.
 # ===========================================================================
-admin_pass = st.text_input("Enter admin password:", type="password")
+admin_pass = st.text_input("Enter admin password:", type="password", key="admin_pass_key")
 if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
     # Define the file path for the CSV file.
     file_path = "/data/user_logs.csv"  # Adjust this path if needed
@@ -515,20 +544,3 @@ if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
         )
     except Exception as e:
         st.error(f"Error reading the file: {e}")
-
-            
-# ============================================================
-# RAG Integration: Build a prompt with relevant article context
-# ============================================================
-rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
-print("RAG Prompt:\n", rag_prompt)
-            
-# Use the RAG prompt as the user message for the chat completion.
-response = get_completion_from_messages([{"role": "user", "content": rag_prompt}])
-            
-# Append the bot's response to chat history.
-st.session_state.chat_history.append({"role": "assistant", "content": response})
-st.session_state.chat_input_key = st.session_state.get("chat_input_key", 0) + 1
-            
-# Rerun the app to update the UI.
-st.rerun()
