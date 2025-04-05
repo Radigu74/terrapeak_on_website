@@ -8,7 +8,7 @@ import faiss
 import pycountry
 import csv
 import logging
-from openai import OpenAIError, RatelimitError
+from openai import OpenAIError, RateLimitError
 
 # IMPORT the CSV-logging function from log_backend
 from log_backend import save_user_data
