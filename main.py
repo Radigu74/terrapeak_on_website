@@ -111,14 +111,21 @@ print("FAISS index created with", index.ntotal, "articles.")
 def retrieve_relevant_articles(query, k=2):
     """
     Retrieve the indices and distances of the k most relevant articles for the given query.
+    Includes error handling to avoid crashes on embedding or index issues.
     """
-    # Generate an embedding for the query text
-    query_embedding = get_embedding(query).astype('float32')
-    query_embedding = np.expand_dims(query_embedding, axis=0)  # FAISS requires a 2D array
-    
-    # Search the index for the top k similar articles
-    distances, indices = index.search(query_embedding, k)
-    return indices[0], distances[0]
+    try:
+        # Generate an embedding for the query text
+        query_embedding = get_embedding(query).astype('float32')
+        query_embedding = np.expand_dims(query_embedding, axis=0)  # FAISS requires a 2D array
+
+        # Search the FAISS index for the top-k similar articles
+        distances, indices = index.search(query_embedding, k)
+
+        return indices[0], distances[0]
+
+    except Exception as e:
+        print(f"[Error] Failed to retrieve relevant articles: {e}")
+        return [], []
 
 # ============================================================
 # STEP 5: Build a Prompt that Integrates the Retrieved Context
