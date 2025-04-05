@@ -507,16 +507,16 @@ if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
         st.error(f"Error reading the file: {e}")
 
             
-            # ============================================================
-            # RAG Integration: Build a prompt with relevant article context
-            # ============================================================
-            rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
-            print("RAG Prompt:\n", rag_prompt)
+# ============================================================
+# RAG Integration: Build a prompt with relevant article context
+# ============================================================
+rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
+print("RAG Prompt:\n", rag_prompt)
             
-            # Use the RAG prompt as the user message for the chat completion.
-            response = get_completion_from_messages([{"role": "user", "content": rag_prompt}])
+# Use the RAG prompt as the user message for the chat completion.
+response = get_completion_from_messages([{"role": "user", "content": rag_prompt}])
             
-            # Append the bot's response to chat history.
-            st.session_state.chat_history.append({"role": "assistant", "content": response})
-            st.session_state.chat_input_key += 1
-            st.rerun()
+# Append the bot's response to chat history.
+st.session_state.chat_history.append({"role": "assistant", "content": response})
+st.session_state.chat_input_key += 1
+st.rerun()
