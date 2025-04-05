@@ -37,6 +37,15 @@ print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
 # ====================================================
 # Hide Streamlit's default menu, header, and footer
+# ====================================================
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # ====================================================
 # STEP 1: Define and Store Your Articles (RAG Source)
