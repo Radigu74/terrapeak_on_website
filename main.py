@@ -7,6 +7,8 @@ import numpy as np
 import faiss
 import pycountry
 import csv
+import logging
+from openai import OpenAIError, RatelimitError
 
 # IMPORT the CSV-logging function from log_backend
 from log_backend import save_user_data
@@ -366,9 +368,17 @@ def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature
 
         return response.choices[0].message.content
 
+    except RateLimitError:
+        logging.warning("Rate limit reached. Try again shortly.")
+        return "We're handling a high volume of requests right now. Please try again in a moment."
+
+    except OpenAIError as e:
+        logging.error(f"OpenAI API error: {e}")
+        return "Hmm, something went wrong while reaching our assistant. Please try again shortly."
+
     except Exception as e:
-        print(f"[Chat API Error] {e}")  # Safe logging
-        return "Sorry, something went wrong while processing your request. Please try again or contact us."
+        logging.exception("Unexpected error occurred.")
+        return "Oops, an unexpected error occurred. Please try again or contact support."
 
 # ===========================
 # User Details Input
