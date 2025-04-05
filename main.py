@@ -78,15 +78,18 @@ articles = [
 # ============================================================
 def get_embedding(text, model="text-embedding-ada-002"):
     """
-    Generate a numeric embedding for a given text using OpenAI's API.
-    Uses the new API style (openai.embeddings.create) and accesses the embedding 
-    via attribute notation.
+    Generate a numeric embedding for a given text using OpenAI's new SDK (v1.x).
     """
-    response = openai.embeddings.create(
-        input=text,
+    if not text or not isinstance(text, str):
+        raise ValueError("Text for embedding must be a non-empty string.")
+    
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    response = client.embeddings.create(
+        input=text.strip(),
         model=model
     )
-    # Use attribute notation to access the embedding
+    
     embedding = response.data[0].embedding
     return np.array(embedding)
 
