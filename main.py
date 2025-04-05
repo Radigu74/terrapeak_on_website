@@ -349,13 +349,26 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 # OpenAI Communication Function (uses Chat API)
 # ===========================
 def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature=0):
-    try: 
-        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    try:
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            return "API key is missing. Please check your environment settings."
+
+        client = openai.OpenAI(api_key=api_key)
+
         messages = st.session_state.chat_context + user_messages
-        response = client.chat.completions.create(model=model, messages=messages, temperature=temperature)
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            timeout=15  # seconds – adjust as needed
+        )
+
         return response.choices[0].message.content
+
     except Exception as e:
-        return f"An error occurred: {e}"
+        print(f"[Chat API Error] {e}")  # Safe logging
+        return "Sorry, something went wrong while processing your request. Please try again or contact us."
 
 # ===========================
 # User Details Input
