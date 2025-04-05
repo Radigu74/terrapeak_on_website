@@ -526,21 +526,4 @@ if st.session_state.chat_enabled:
             # Rerun the app to update the UI.
             st.rerun()
 
-# ===========================================================================
-# Admin download section – only visible when the correct password is entered.
-# ===========================================================================
-admin_pass = st.text_input("Enter admin password:", type="password", key="admin_pass_key")
-if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
-    # Define the file path for the CSV file.
-    file_path = "/data/user_logs.csv"  # Adjust this path if needed
-    try:
-        with open(file_path, "rb") as f:
-            file_data = f.read()
-        st.download_button(
-            label="Download User Logs CSV",
-            data=file_data,
-            file_name="user_logs.csv",
-            mime="text/csv"
-        )
-    except Exception as e:
-        st.error(f"Error reading the file: {e}")
+
