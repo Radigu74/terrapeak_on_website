@@ -96,7 +96,9 @@ def get_embedding(text, model="text-embedding-ada-002"):
 # STEP 3: Generate Embeddings for the Articles and Build FAISS Index
 # ============================================================
 # Generate embeddings for each article
-article_embeddings = [get_embedding(article) for article in articles]
+article_embeddings = [
+    get_embedding(article) for article in articles if article and article.strip()
+]
 
 # Determine the dimensionality of the embeddings
 embedding_dim = len(article_embeddings[0])
