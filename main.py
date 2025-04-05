@@ -10,22 +10,34 @@ import csv
 import logging
 from openai import OpenAIError, RateLimitError
 
+# =============================================
 # Path to the CSV file on the persistent volume
+# =============================================
 file_path = "/data/user_logs.csv"
 
+# =================================================
 # IMPORT the CSV-logging function from log_backend
+# =================================================
 from log_backend import save_user_data
 
+# =============================
 # Load environment variables
+# ============================
 _ = load_dotenv(find_dotenv())
 
+# ===================
 # OpenAI API Key
+# ===================
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# ===========================
 # For debugging purposes
+# ===========================
 print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
+# ====================================================
 # Hide Streamlit's default menu, header, and footer
+# ====================================================
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -35,9 +47,9 @@ hide_st_style = """
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-    # ============================================================
+# ====================================================
 # STEP 1: Define and Store Your Articles (RAG Source)
-# ============================================================
+# ====================================================
 # Your optimized TerraPeak launch article is stored here.
 articles = [
     {
@@ -95,9 +107,9 @@ def get_embedding(text, model="text-embedding-ada-002"):
     
     embedding = response.data[0].embedding
     return np.array(embedding)
-# ============================================================
+# ===================================================================
 # STEP 3: Generate Embeddings for the Articles and Build FAISS Index
-# ============================================================
+# ===================================================================
 # Generate embeddings for each article
 article_embeddings = [
     get_embedding(article["content"])
@@ -116,9 +128,9 @@ embeddings_np = np.array(article_embeddings).astype('float32')
 index.add(embeddings_np)
 print("FAISS index created with", index.ntotal, "articles.")
 
-# ============================================================
+# ====================================================================
 # STEP 4: Create a Function to Retrieve Relevant Articles for a Query
-# ============================================================
+# ====================================================================
 def retrieve_relevant_articles(query, k=2):
     """
     Retrieve the indices and distances of the k most relevant articles for the given query.
@@ -165,13 +177,9 @@ def build_prompt_with_context(user_query, k=2):
     
     return prompt
 
-# ============================================================
-# EXISTING CHATBOT CODE BEGINS BELOW
-# ============================================================
-
-# ===========================
+# ================================================================
 # CUSTOM UI: Inject custom CSS for styling using Terrapeak colors 
-# ===========================
+# ================================================================
 st.markdown(
     """
     <style>
@@ -242,9 +250,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ===========================
+# ============================
 # Session State Initialization
-# ===========================
+# ============================
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "chat_enabled" not in st.session_state:
@@ -364,9 +372,9 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 """}
     ]
 
-# ===========================
+# ==============================================
 # OpenAI Communication Function (uses Chat API)
-# ===========================
+# ==============================================
 def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature=0):
     try:
         api_key = os.getenv("OPENAI_API_KEY")
@@ -458,9 +466,9 @@ if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
     st.markdown(validation_message, unsafe_allow_html=True)
     
-# ===========================
+# ========================================================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
-# ===========================
+# =========================================================
 st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
@@ -471,9 +479,9 @@ with st.container():
         else:
             st.markdown(f'<div class="bot-message">{chat["content"]}</div>', unsafe_allow_html=True)
 
-# ===========================
+# ============================================
 # CUSTOM UI: Chat Input Field with Send Button
-# ===========================
+# =============================================
 if "chat_input_key" not in st.session_state:
     st.session_state.chat_input_key = 0
 
@@ -489,7 +497,9 @@ if st.session_state.chat_enabled:
             # Append the original user message to chat history.
             st.session_state.chat_history.append({"role": "user", "content": user_input.strip()})
 
+# ===========================================================================
 # Admin download section – only visible when the correct password is entered.
+# ===========================================================================
 admin_pass = st.text_input("Enter admin password:", type="password")
 if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
     # Define the file path for the CSV file.
@@ -506,17 +516,29 @@ if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
     except Exception as e:
         st.error(f"Error reading the file: {e}")
 
+# --- Chat Section (only runs if chat is enabled) ---
+if st.session_state.get("chat_enabled", False):
+    # Create the chat input field
+    user_input = st.text_input("Type your message here...", key=f"chat_input_{st.session_state.get('chat_input_key', 0)}", value="")
+    
+    # When the user clicks the "Send" button, process the input
+    if st.button("Send", key="send_button"):
+        if user_input.strip():
+            # Append the original user message to chat history.
+            st.session_state.chat_history.append({"role": "user", "content": user_input.strip()})
             
-# ============================================================
-# RAG Integration: Build a prompt with relevant article context
-# ============================================================
-rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
-print("RAG Prompt:\n", rag_prompt)
-
-# Use the RAG prompt as the user message for the chat completion.
-response = get_completion_from_messages([{"role": "user", "content": rag_prompt}])
-
-# Append the bot's response to chat history.
-st.session_state.chat_history.append({"role": "assistant", "content": response})
-st.session_state.chat_input_key += 1
-st.rerun()
+            # ============================================================
+            # RAG Integration: Build a prompt with relevant article context
+            # ============================================================
+            rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
+            print("RAG Prompt:\n", rag_prompt)
+            
+            # Use the RAG prompt as the user message for the chat completion.
+            response = get_completion_from_messages([{"role": "user", "content": rag_prompt}])
+            
+            # Append the bot's response to chat history.
+            st.session_state.chat_history.append({"role": "assistant", "content": response})
+            st.session_state.chat_input_key = st.session_state.get("chat_input_key", 0) + 1
+            
+            # Rerun the app to update the UI.
+            st.rerun()
