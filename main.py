@@ -80,9 +80,9 @@ def get_embedding(text, model="text-embedding-ada-002"):
     """
     Generate a numeric embedding for a given text using OpenAI's new SDK (v1.x).
     """
-    if not text or not isinstance(text, str):
+    if not text or not isinstance(text, str) or not text.strip():
         raise ValueError("Text for embedding must be a non-empty string.")
-    
+
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     response = client.embeddings.create(
@@ -92,7 +92,6 @@ def get_embedding(text, model="text-embedding-ada-002"):
     
     embedding = response.data[0].embedding
     return np.array(embedding)
-
 # ============================================================
 # STEP 3: Generate Embeddings for the Articles and Build FAISS Index
 # ============================================================
