@@ -339,11 +339,14 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 # ===========================
 # OpenAI Communication Function (uses Chat API)
 # ===========================
-def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperature=0):
-    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    messages = st.session_state.chat_context + user_messages
-    response = client.chat.completions.create(model=model, messages=messages, temperature=temperature)
-    return response.choices[0].message.content
+def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature=0):
+    try: 
+        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        messages = st.session_state.chat_context + user_messages
+        response = client.chat.completions.create(model=model, messages=messages, temperature=temperature)
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"An error occurred: {e}"
 
 # ===========================
 # User Details Input
