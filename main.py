@@ -16,18 +16,6 @@ file_path = "/data/user_logs.csv"
 # IMPORT the CSV-logging function from log_backend
 from log_backend import save_user_data
 
-try:
-    with open(file_path, "rb") as f:
-        file_data = f.read()
-    st.download_button(
-        label="Download User Logs CSV",
-        data=file_data,
-        file_name="user_logs.csv",
-        mime="text/csv"
-    )
-except Exception as e:
-    st.error(f"Error reading the file: {e}")
-
 # Load environment variables
 _ = load_dotenv(find_dotenv())
 
@@ -500,6 +488,24 @@ if st.session_state.chat_enabled:
         if user_input.strip():
             # Append the original user message to chat history.
             st.session_state.chat_history.append({"role": "user", "content": user_input.strip()})
+
+# Admin download section – only visible when the correct password is entered.
+admin_pass = st.text_input("Enter admin password:", type="password")
+if admin_pass == "Terrapeak2025":  # Replace with your actual secret password
+    # Define the file path for the CSV file.
+    file_path = "/data/user_logs.csv"  # Adjust this path if needed
+    try:
+        with open(file_path, "rb") as f:
+            file_data = f.read()
+        st.download_button(
+            label="Download User Logs CSV",
+            data=file_data,
+            file_name="user_logs.csv",
+            mime="text/csv"
+        )
+    except Exception as e:
+        st.error(f"Error reading the file: {e}")
+
             
             # ============================================================
             # RAG Integration: Build a prompt with relevant article context
