@@ -10,8 +10,23 @@ import csv
 import logging
 from openai import OpenAIError, RateLimitError
 
+# Path to the CSV file on the persistent volume
+file_path = "/data/user_logs.csv"
+
 # IMPORT the CSV-logging function from log_backend
 from log_backend import save_user_data
+
+try:
+    with open(file_path, "rb") as f:
+        file_data = f.read()
+    st.download_button(
+        label="Download User Logs CSV",
+        data=file_data,
+        file_name="user_logs.csv",
+        mime="text/csv"
+    )
+except Exception as e:
+    st.error(f"Error reading the file: {e}")
 
 # Load environment variables
 _ = load_dotenv(find_dotenv())
