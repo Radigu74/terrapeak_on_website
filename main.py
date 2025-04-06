@@ -437,6 +437,7 @@ st.markdown('<div class="contact-form">', unsafe_allow_html=True)
 
 name = st.text_input("Enter your name:", key="name_input")
 email = st.text_input("Enter your email:", key="email_input")
+company = st.text_input("Enter your company name:", key='company_input")
 phone = st.text_input("Enter your phone number:", key="phone_input")
 country_list = sorted([country.name for country in pycountry.countries])
 country = st.selectbox("Select Country", country_list, key="country_dropdown")
