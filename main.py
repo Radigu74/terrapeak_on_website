@@ -43,7 +43,7 @@ def authenticate_google_sheets():
         ]
     )
     creds.refresh(Request())
-    client = authorize(creds))
+    client = authorize(creds)
     return client
 
 # ================================
