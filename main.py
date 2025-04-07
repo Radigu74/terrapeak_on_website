@@ -12,7 +12,6 @@ from openai import OpenAIError, RateLimitError
 import json
 import datetime
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
@@ -38,7 +37,7 @@ def authenticate_google_sheets():
         token_uri='https://oauth2.googleapis.com/token',
         client_id=os.getenv("GOOGLE_CLIENT_ID"),
         client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
-        scopes=['https://www.googleapis.com/auth/spreadsheets']
+        scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
     )
     creds.refresh(Request())
     client = gspread.authorize(creds)
