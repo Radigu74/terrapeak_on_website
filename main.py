@@ -62,7 +62,7 @@ def log_to_google_sheets(user_data):
             user_data.get("email", ""),
             user_data.get("company", ""),
             user_data.get("phone", ""),
-            user_data.get("country", ""),
+            user_data.get("Country", ""),
             user_data.get("question", ""),
             user_data.get("response", "")
         ]
@@ -504,11 +504,11 @@ def validate_and_start():
 
     # Log user data to Google Sheets
     log_to_google_sheets({
-        "Name": name,
-        "Email": email,
-        "Company": company,
-        "Phone": phone,
-        "Country": country
+        "name": name,
+        "email": email,
+        "company": company,
+        "phone": phone,
+        "Country": Country
     })
 
     return "✅ **Details saved!**"
