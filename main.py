@@ -574,4 +574,6 @@ def log_to_google_sheets(user_data):
 
     return True
 
+# ✅ Test: Check if the function is defined correctly
+print(log_to_google_sheets)
 
