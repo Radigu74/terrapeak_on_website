@@ -6,3 +6,5 @@ streamlit==1.43.0
 pycountry
 datetime
 gspread
+oauth2client
+ServiceAccountCredentials
