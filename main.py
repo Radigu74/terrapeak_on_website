@@ -454,7 +454,7 @@ def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature
         return "Oops, an unexpected error occurred. Please try again or contact support."
 
 # ===========================
-# User Details Input
+# UI PURPOSE for User Details Input
 # ===========================
 st.markdown(
     """
