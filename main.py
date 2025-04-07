@@ -34,7 +34,7 @@ def authenticate_google_sheets():
     creds = Credentials(
         None,
         refresh_token=os.getenv("GOOGLE_REFRESH_TOKEN"),
-        token_uri='https://oauth2.googleapis.com/token',
+        token_uri=os.getenv("GOOGLE_TOKEN_URI"),
         client_id=os.getenv("GOOGLE_CLIENT_ID"),
         client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
         scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
