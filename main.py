@@ -29,6 +29,56 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # ===========================
 print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
+# ================================
+# Logging Function to Google Sheet
+# ================================
+def log_to_google_sheets(user_data):
+    try:
+        # Load credentials from Railway environment variable
+        creds_json = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
+        if not creds_json:
+            raise ValueError("Missing Google Sheets credentials JSON.")
+
+        creds_dict = json.loads(creds_json)
+
+        # Define scope for Sheets API
+        scope = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive"
+        ]
+
+        # Authenticate using service account credentials
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+        client = gspread.authorize(creds)
+
+        # Connect to your Google Sheet by name
+        sheet = client.open("Chatlogs Terrapeak").sheet1
+
+        # Prepare the row to insert
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        row = [
+            now,
+            user_data.get("name", ""),
+            user_data.get("email", ""),
+            user_data.get("company", ""),
+            user_data.get("phone", ""),
+            user_data.get("country", ""),
+            user_data.get("question", ""),
+            user_data.get("response", "")
+        ]
+
+        # Append row to sheet
+        sheet.append_row(row)
+
+    except Exception as e:
+        print(f"[Google Sheets Logging Error] {e}")
+        return False
+
+    return True
+
+# ✅ Test: Check if the function is defined correctly
+print(log_to_google_sheets)
+
 # ====================================================
 # Hide Streamlit's default menu, header, and footer
 # ====================================================
@@ -527,53 +577,5 @@ if st.session_state.chat_enabled:
             # Rerun the app to update the UI.
             st.rerun()
 
-# ================================
-# Logging Function to Google Sheet
-# ================================
-def log_to_google_sheets(user_data):
-    try:
-        # Load credentials from Railway environment variable
-        creds_json = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
-        if not creds_json:
-            raise ValueError("Missing Google Sheets credentials JSON.")
 
-        creds_dict = json.loads(creds_json)
-
-        # Define scope for Sheets API
-        scope = [
-            "https://www.googleapis.com/auth/spreadsheets",
-            "https://www.googleapis.com/auth/drive"
-        ]
-
-        # Authenticate using service account credentials
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-        client = gspread.authorize(creds)
-
-        # Connect to your Google Sheet by name
-        sheet = client.open("Chatlogs Terrapeak").sheet1
-
-        # Prepare the row to insert
-        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        row = [
-            now,
-            user_data.get("name", ""),
-            user_data.get("email", ""),
-            user_data.get("company", ""),
-            user_data.get("phone", ""),
-            user_data.get("country", ""),
-            user_data.get("question", ""),
-            user_data.get("response", "")
-        ]
-
-        # Append row to sheet
-        sheet.append_row(row)
-
-    except Exception as e:
-        print(f"[Google Sheets Logging Error] {e}")
-        return False
-
-    return True
-
-# ✅ Test: Check if the function is defined correctly
-print(log_to_google_sheets)
 
