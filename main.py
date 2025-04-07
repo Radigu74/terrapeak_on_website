@@ -508,7 +508,7 @@ def validate_and_start():
         "email": email,
         "company": company,
         "phone": phone,
-        "Country": Country
+        "country": country
     })
 
     return "✅ **Details saved!**"
@@ -570,6 +570,17 @@ if st.session_state.chat_enabled:
                 "role": "assistant",
                 "content": response
             })
+
+            # ----- STEP 4: Capture Chat Interaction (Logging to Google Sheets) -----
+            log_to_google_sheets({
+                "name": name,
+                "email": email,
+                "company": company,
+                "phone": phone,
+                "country": country,
+                "question": user_input.strip(),
+                "response": response
+            })    
             
             # Increment the chat input key to ensure unique keys for the next input.
             st.session_state.chat_input_key += 1
