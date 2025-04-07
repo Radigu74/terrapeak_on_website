@@ -9,16 +9,10 @@ import pycountry
 import csv
 import logging
 from openai import OpenAIError, RateLimitError
-
-# =============================================
-# Path to the CSV file on the persistent volume
-# =============================================
-file_path = "/data/user_logs.csv"
-
-# =================================================
-# IMPORT the CSV-logging function from log_backend
-# =================================================
-from log_backend import save_user_data
+import json
+import datetime
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 # =============================
 # Load environment variables
@@ -455,16 +449,18 @@ def validate_and_start():
         return "❌ Invalid email."
     if not is_valid_phone(phone):
         return "❌ Invalid phone number."
+    
     st.session_state.chat_enabled = True
 
-       # LOG USER DATA HERE
-    save_user_data(
-        name=name,        
-        email=email,
-        phone=phone,
-        country=country
-    )
-            
+    # Log user data to Google Sheets
+    log_to_google_sheets({
+        "Name": name,
+        "Email": email,
+        "Company": company,
+        "Phone": phone,
+        "Country": country
+    })
+
     return "✅ **Details saved!**"
 
 if st.button("Submit Details", key="submit_button"):
@@ -530,5 +526,52 @@ if st.session_state.chat_enabled:
             
             # Rerun the app to update the UI.
             st.rerun()
+
+# ================================
+# Logging Function to Google Sheet
+# ================================
+def log_to_google_sheets(user_data):
+    try:
+        # Load credentials from Railway environment variable
+        creds_json = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
+        if not creds_json:
+            raise ValueError("Missing Google Sheets credentials JSON.")
+
+        creds_dict = json.loads(creds_json)
+
+        # Define scope for Sheets API
+        scope = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive"
+        ]
+
+        # Authenticate using service account credentials
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+        client = gspread.authorize(creds)
+
+        # Connect to your Google Sheet by name
+        sheet = client.open("Chatlogs Terrapeak").sheet1
+
+        # Prepare the row to insert
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        row = [
+            now,
+            user_data.get("name", ""),
+            user_data.get("email", ""),
+            user_data.get("company", ""),
+            user_data.get("phone", ""),
+            user_data.get("country", ""),
+            user_data.get("question", ""),
+            user_data.get("response", "")
+        ]
+
+        # Append row to sheet
+        sheet.append_row(row)
+
+    except Exception as e:
+        print(f"[Google Sheets Logging Error] {e}")
+        return False
+
+    return True
 
 
