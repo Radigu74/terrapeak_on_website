@@ -13,6 +13,8 @@ import json
 import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
 
 # =============================
 # Load environment variables
@@ -28,6 +30,19 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # For debugging purposes
 # ===========================
 print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
+
+def authenticate_google_sheets():
+    creds = Credentials(
+        None,
+        refresh_token=os.getenv("GOOGLE_REFRESH_TOKEN"),
+        token_uri='https://oauth2.googleapis.com/token',
+        client_id=os.getenv("GOOGLE_CLIENT_ID"),
+        client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
+        scopes=['https://www.googleapis.com/auth/spreadsheets']
+    )
+    creds.refresh(Request())
+    client = gspread.authorize(creds)
+    return client
 
 # ================================
 # Logging Function to Google Sheet
