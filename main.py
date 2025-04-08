@@ -518,12 +518,13 @@ if st.button("Submit Details", key="submit_button"):
 st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
-with st.container():
-    for chat in st.session_state.chat_history:
-        if chat["role"] == "user":
-            st.markdown(f'<div class="user-message">{chat["content"]}</div>', unsafe_allow_html=True)
-        else:
-            st.markdown(f'<div class="bot-message">{chat["content"]}</div>', unsafe_allow_html=True)
+if False:
+    with st.container():
+        for chat in st.session_state.chat_history:
+            if chat["role"] == "user":
+                st.markdown(f'<div class="user-message">{chat["content"]}</div>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<div class="bot-message">{chat["content"]}</div>', unsafe_allow_html=True)
 
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
