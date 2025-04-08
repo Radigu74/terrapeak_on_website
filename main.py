@@ -511,20 +511,7 @@ if st.session_state.chat_enabled:
 
         # Show assistant message with TerraPeak styling
         with st.chat_message("assistant", avatar="🌍"):
-            styled_response = f"""
-                <div style='
-                    background-color: #1d3e5e;
-                    color: #f4f4f2;
-                    padding: 12px;
-                    border-radius: 21px;
-                    max-width: 80%;
-                    font-family: sans-serif;
-                    margin-top: 10px;
-                '>
-                    {assistant_response}
-                </div>
-            """
-            st.markdown(styled_response, unsafe_allow_html=True)
+            st.markdown(assistant_response)
 
         # Save assistant message
         st.session_state.chat_history.append({
