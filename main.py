@@ -511,18 +511,18 @@ def validate_and_start():
 if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
     st.markdown(validation_message, unsafe_allow_html=True)
-
-if st.session_state.chat_enabled:
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "🌍"):
-            st.markdown(msg["content"])
-    
+   
 # ========================================================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
 # =========================================================
 st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
+if st.session_state.chat_enabled:
+    for msg in st.session_state.chat_history:
+        with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "🌍"):
+            st.markdown(msg["content"])
+            
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
 # ============================================
