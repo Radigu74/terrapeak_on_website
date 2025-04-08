@@ -492,12 +492,14 @@ def is_valid_phone(phone):
 def validate_and_start():
     if not is_valid_email(email):
         return "❌ Invalid email."
+    
     if not is_valid_phone(phone):
         return "❌ Invalid phone number."
-    
+
+    # Enable chat input after validation
     st.session_state.chat_enabled = True
 
-    # Log user data to Google Sheets
+    # Log to Google Sheets
     log_to_google_sheets({
         "name": name,
         "email": email,
@@ -506,10 +508,11 @@ def validate_and_start():
         "country": country
     })
 
-        # ✅ Add the welcome message from Terra using your original chat bubble format
+    # Add welcome message to chat history
     st.session_state.chat_history.append({
         "role": "assistant",
         "content": "Hi there! 👋 I’m Terra, your virtual assistant here at TerraPeak Consulting. How can I support your business today?"
+    })
 
     return "✅ **Details saved!**"
 
