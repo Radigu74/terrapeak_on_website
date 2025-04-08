@@ -526,6 +526,13 @@ if st.button("Submit Details", key="submit_button"):
 st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
+    if user_input:    
+        # Add user message to history
+        st.session_state.chat_history.append({
+            "role": "user",
+            "content": user_input
+        })
+
 with st.container():
     for chat in st.session_state.chat_history:
         if chat["role"] == "user":
@@ -539,13 +546,7 @@ with st.container():
 if st.session_state.chat_enabled:
     user_input = st.chat_input("Type your message here...")
     
-if user_input:
-    # Add user message to history
-    st.session_state.chat_history.append({
-        "role": "user",
-        "content": user_input
-    })
-
+if user_input:  
     # Placeholder for assistant response (shows a "typing..." effect first)
     placeholder = st.empty()
     placeholder.markdown('<div class="bot-message">⏳ Terra is thinking...</div>', unsafe_allow_html=True)
