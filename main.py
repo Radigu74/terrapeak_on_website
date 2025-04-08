@@ -245,18 +245,6 @@ st.markdown(
         color: #131313;
         font-family: sans-serif;
     }
-    /* Chat container styling */
-    .chat-container {
-        max-width: 800px;
-        margin: auto;
-        padding: 10px;
-    }
-    /* Input box styling: override Streamlit's default input style */
-    input, textarea {
-        border-radius: 21px !important;
-        border: 2px solid 131313 !important;
-        padding: 10px !important;
-    }
     </style>
     """,
     unsafe_allow_html=True,
