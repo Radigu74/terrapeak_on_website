@@ -526,8 +526,11 @@ if st.button("Submit Details", key="submit_button"):
 st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
-    if user_input:    
-        # Add user message to history
+if st.session_state.chat_enabled:
+    user_input = st.chat_input("Type your message here...")
+
+    if user_input:
+        # Add user message BEFORE rendering chat
         st.session_state.chat_history.append({
             "role": "user",
             "content": user_input
