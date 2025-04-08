@@ -522,7 +522,7 @@ with st.container():
     for chat in st.session_state.chat_history:
         if chat["role"] == "user":
             st.markdown(f'<div class="user-message">{chat["content"]}</div>', unsafe_allow_html=True)
-         else:
+        else:
             st.markdown(f'<div class="bot-message">{chat["content"]}</div>', unsafe_allow_html=True)
 
 # ============================================
