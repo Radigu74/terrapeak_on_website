@@ -506,6 +506,11 @@ def validate_and_start():
         "country": country
     })
 
+        # ✅ Add the welcome message from Terra using your original chat bubble format
+    st.session_state.chat_history.append({
+        "role": "assistant",
+        "content": "Hi there! 👋 I’m Terra, your virtual assistant here at TerraPeak Consulting. How can I support your business today?"
+
     return "✅ **Details saved!**"
 
 if st.button("Submit Details", key="submit_button"):
