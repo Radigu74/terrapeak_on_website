@@ -546,14 +546,21 @@ if user_input:
         "content": user_input
     })
 
-    # Generate assistant response using RAG
+    # Placeholder for assistant response (shows a "typing..." effect first)
+    placeholder = st.empty()
+    placeholder.markdown('<div class="bot-message">⏳ Terra is thinking...</div>', unsafe_allow_html=True)
+
+    # Generate assistant response
     rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
     assistant_response = get_completion_from_messages([{
         "role": "user",
         "content": rag_prompt
     }])
 
-    # Add assistant response to history
+    # Replace the placeholder with the actual assistant message
+    placeholder.markdown(f'<div class="bot-message">{assistant_response}</div>', unsafe_allow_html=True)
+
+    # Add to history so it's shown again on the next render
     st.session_state.chat_history.append({
         "role": "assistant",
         "content": assistant_response
@@ -569,4 +576,5 @@ if user_input:
         "question": user_input,
         "response": assistant_response
     })
+
 
