@@ -473,6 +473,12 @@ def validate_and_start():
 if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
     st.markdown(validation_message, unsafe_allow_html=True)
+
+    # ✅ Personalized welcome message
+    st.session_state.chat_history.append({
+        "role": "assistant",
+        "content": f"Hi {name}! 👋 I’m Terra, your virtual assistant here at TerraPeak Consulting. How can I support your business today?"
+    })
    
 # ========================================================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
