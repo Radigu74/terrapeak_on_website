@@ -528,60 +528,44 @@ with st.container():
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
 # ============================================
-if "chat_input_key" not in st.session_state:
-    st.session_state.chat_input_key = 0
-
 if st.session_state.chat_enabled:
-    # Create the chat input field with a unique key
-    user_input = st.text_input(
-        "Type your message here...",
-        key=f"chat_input_{st.session_state.chat_input_key}",
-        value=""
-    )
+    user_input = st.chat_input("Type your message here...")
     
-    # Process the message when the Send button is pressed
-    if st.button("Send", key="send_button"):
-        if user_input.strip():
-            # Append the user's message to chat history.
-            st.session_state.chat_history.append({
-                "role": "user",
-                "content": user_input.strip()
-            })
-            
-            # ============================================================
-            # RAG Integration: Build a prompt with relevant article context
-            # ============================================================
-            rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
-            print("RAG Prompt:\n", rag_prompt)
-            
-            # Get the assistant's response using the prompt.
-            response = get_completion_from_messages([{
-                "role": "user",
-                "content": rag_prompt
-            }])
-            
-            # Append the assistant's response to chat history.
-            st.session_state.chat_history.append({
-                "role": "assistant",
-                "content": response
-            })
+    if user_input:
+        # Show user message instantly
+        with st.chat_message("user"):
+            st.markdown(user_input)
 
-            # ----- STEP 4: Capture Chat Interaction (Logging to Google Sheets) -----
-            log_to_google_sheets({
-                "name": name,
-                "email": email,
-                "company": company,
-                "phone": phone,
-                "country": country,
-                "question": user_input.strip(),
-                "response": response
-            })    
-            
-            # Increment the chat input key to ensure unique keys for the next input.
-            st.session_state.chat_input_key += 1
-            
-            # Rerun the app to update the UI.
-            st.rerun()
+        # Add to history
+        st.session_state.chat_history.append({
+            "role": "user",
+            "content": user_input
+        })
 
+        # Get RAG context and response
+        rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
+        assistant_response = get_completion_from_messages([{
+            "role": "user",
+            "content": rag_prompt
+        }])
 
+        # Show assistant response
+        with st.chat_message("assistant"):
+            st.markdown(assistant_response)
 
+        # Save to chat history
+        st.session_state.chat_history.append({
+            "role": "assistant",
+            "content": assistant_response
+        })
+
+        # Log to Google Sheets
+        log_to_google_sheets({
+            "name": name,
+            "email": email,
+            "company": company,
+            "phone": phone,
+            "country": country,
+            "question": user_input,
+            "response": assistant_response
+        })
