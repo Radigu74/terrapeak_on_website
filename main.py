@@ -539,41 +539,34 @@ with st.container():
 if st.session_state.chat_enabled:
     user_input = st.chat_input("Type your message here...")
     
-    if user_input:
-        # Show user message instantly
-        with st.chat_message("user"):
-            st.markdown(user_input)
+if user_input:
+    # Add user message to history
+    st.session_state.chat_history.append({
+        "role": "user",
+        "content": user_input
+    })
 
-        # Add to history
-        st.session_state.chat_history.append({
-            "role": "user",
-            "content": user_input
-        })
+    # Generate assistant response using RAG
+    rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
+    assistant_response = get_completion_from_messages([{
+        "role": "user",
+        "content": rag_prompt
+    }])
 
-        # Get RAG context and response
-        rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
-        assistant_response = get_completion_from_messages([{
-            "role": "user",
-            "content": rag_prompt
-        }])
+    # Add assistant response to history
+    st.session_state.chat_history.append({
+        "role": "assistant",
+        "content": assistant_response
+    })
 
-        # Show assistant response
-        with st.chat_message("assistant"):
-            st.markdown(assistant_response)
+    # Log to Google Sheets
+    log_to_google_sheets({
+        "name": name,
+        "email": email,
+        "company": company,
+        "phone": phone,
+        "country": country,
+        "question": user_input,
+        "response": assistant_response
+    })
 
-        # Save to chat history
-        st.session_state.chat_history.append({
-            "role": "assistant",
-            "content": assistant_response
-        })
-
-        # Log to Google Sheets
-        log_to_google_sheets({
-            "name": name,
-            "email": email,
-            "company": company,
-            "phone": phone,
-            "country": country,
-            "question": user_input,
-            "response": assistant_response
-        })
