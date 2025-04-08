@@ -199,7 +199,7 @@ def build_prompt_with_context(user_query, k=2):
     labeled_contexts = []
     for i in indices:
         article = articles[i]
-        trimmed_content = article["content"][:1500]  # Limit content to avoid long prompts
+        trimmed_content = article["content"][:1000]  # Limit content to avoid long prompts
         labeled_context = f"Source: {article['title']}\n{trimmed_content}"
         labeled_contexts.append(labeled_context)
 
