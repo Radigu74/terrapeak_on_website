@@ -192,18 +192,19 @@ def retrieve_relevant_articles(query, k=2):
 # ============================================================
 def build_prompt_with_context(user_query, k=2):
     """
-    Build a prompt that includes relevant article context with labeled sources for better grounding.
+    Build a prompt that includes trimmed article context for faster GPT responses.
     """
     indices, _ = retrieve_relevant_articles(user_query, k)
-    
+
     labeled_contexts = []
     for i in indices:
         article = articles[i]
-        labeled_context = f"Source: {article['title']}\n{article['content']}"
+        trimmed_content = article["content"][:1500]  # Limit content to avoid long prompts
+        labeled_context = f"Source: {article['title']}\n{trimmed_content}"
         labeled_contexts.append(labeled_context)
-    
+
     full_context = "\n\n".join(labeled_contexts)
-    
+
     prompt = (
         f"You are an AI assistant responding to the user's question using the most relevant context below.\n"
         f"Use the sources to support your answer clearly.\n\n"
@@ -211,7 +212,7 @@ def build_prompt_with_context(user_query, k=2):
         f"User Question: {user_query}\n\n"
         f"Answer:"
     )
-    
+
     return prompt
 
 # ================================================================
