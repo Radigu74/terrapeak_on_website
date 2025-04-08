@@ -511,6 +511,11 @@ def validate_and_start():
 if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
     st.markdown(validation_message, unsafe_allow_html=True)
+
+if st.session_state.chat_enabled:
+    for msg in st.session_state.chat_history:
+        with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "🌍"):
+            st.markdown(msg["content"])
     
 # ========================================================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
@@ -518,42 +523,32 @@ if st.button("Submit Details", key="submit_button"):
 st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
-with st.container():
-    for chat in st.session_state.chat_history:
-        if chat["role"] == "user":
-            st.markdown(f'<div class="user-message">{chat["content"]}</div>', unsafe_allow_html=True)
-        else:
-            st.markdown(f'<div class="bot-message">{chat["content"]}</div>', unsafe_allow_html=True)
-
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
 # ============================================
 if st.session_state.chat_enabled:
     user_input = st.chat_input("Type your message here...")
-    
+
     if user_input:
-        # Show user message instantly
-        with st.chat_message("user"):
+        # Show user message
+        with st.chat_message("user", avatar="👤"):
             st.markdown(user_input)
 
-        # Add to history
+        # Save user input
         st.session_state.chat_history.append({
             "role": "user",
             "content": user_input
         })
 
-        # Get RAG context and response
+        # Get assistant response
         rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
         assistant_response = get_completion_from_messages([{
             "role": "user",
             "content": rag_prompt
         }])
 
+        # Show assistant message with TerraPeak styling
         with st.chat_message("assistant", avatar="🌍"):
-            # Default plain message
-            st.markdown(assistant_response)
-
-            # 💡 Test custom styled bubble
             styled_response = f"""
                 <div style='
                     background-color: #1d3e5e;
@@ -569,7 +564,7 @@ if st.session_state.chat_enabled:
             """
             st.markdown(styled_response, unsafe_allow_html=True)
 
-        # Save to chat history
+        # Save assistant message
         st.session_state.chat_history.append({
             "role": "assistant",
             "content": assistant_response
@@ -585,3 +580,4 @@ if st.session_state.chat_enabled:
             "question": user_input,
             "response": assistant_response
         })
+
