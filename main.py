@@ -549,9 +549,25 @@ if st.session_state.chat_enabled:
             "content": rag_prompt
         }])
 
-        # Show assistant response
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar="🌍"):
+            # Default plain message
             st.markdown(assistant_response)
+
+            # 💡 Test custom styled bubble
+            styled_response = f"""
+                <div style='
+                    background-color: #1d3e5e;
+                    color: #f4f4f2;
+                    padding: 12px;
+                    border-radius: 21px;
+                    max-width: 80%;
+                    font-family: sans-serif;
+                    margin-top: 10px;
+                '>
+                    {assistant_response}
+                </div>
+            """
+            st.markdown(styled_response, unsafe_allow_html=True)
 
         # Save to chat history
         st.session_state.chat_history.append({
