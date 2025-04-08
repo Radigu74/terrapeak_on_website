@@ -492,26 +492,18 @@ def is_valid_phone(phone):
 def validate_and_start():
     if not is_valid_email(email):
         return "❌ Invalid email."
-    
     if not is_valid_phone(phone):
         return "❌ Invalid phone number."
-
-    # Enable chat input after validation
+    
     st.session_state.chat_enabled = True
 
-    # Log to Google Sheets
+    # Log user data to Google Sheets
     log_to_google_sheets({
         "name": name,
         "email": email,
         "company": company,
         "phone": phone,
         "country": country
-    })
-
-    # Add welcome message to chat history
-    st.session_state.chat_history.append({
-        "role": "assistant",
-        "content": "Hi there! 👋 I’m Terra, your virtual assistant here at TerraPeak Consulting. How can I support your business today?"
     })
 
     return "✅ **Details saved!**"
@@ -526,16 +518,6 @@ if st.button("Submit Details", key="submit_button"):
 st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
-if st.session_state.chat_enabled:
-    user_input = st.chat_input("Type your message here...")
-
-    if user_input:
-        # Add user message BEFORE rendering chat
-        st.session_state.chat_history.append({
-            "role": "user",
-            "content": user_input
-        })
-
 with st.container():
     for chat in st.session_state.chat_history:
         if chat["role"] == "user":
@@ -549,36 +531,41 @@ with st.container():
 if st.session_state.chat_enabled:
     user_input = st.chat_input("Type your message here...")
     
-if user_input:  
-    # Placeholder for assistant response (shows a "typing..." effect first)
-    placeholder = st.empty()
-    placeholder.markdown('<div class="bot-message">⏳ Terra is thinking...</div>', unsafe_allow_html=True)
+    if user_input:
+        # Show user message instantly
+        with st.chat_message("user"):
+            st.markdown(user_input)
 
-    # Generate assistant response
-    rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
-    assistant_response = get_completion_from_messages([{
-        "role": "user",
-        "content": rag_prompt
-    }])
+        # Add to history
+        st.session_state.chat_history.append({
+            "role": "user",
+            "content": user_input
+        })
 
-    # Replace the placeholder with the actual assistant message
-    placeholder.markdown(f'<div class="bot-message">{assistant_response}</div>', unsafe_allow_html=True)
+        # Get RAG context and response
+        rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
+        assistant_response = get_completion_from_messages([{
+            "role": "user",
+            "content": rag_prompt
+        }])
 
-    # Add to history so it's shown again on the next render
-    st.session_state.chat_history.append({
-        "role": "assistant",
-        "content": assistant_response
-    })
+        # Show assistant response
+        with st.chat_message("assistant"):
+            st.markdown(assistant_response)
 
-    # Log to Google Sheets
-    log_to_google_sheets({
-        "name": name,
-        "email": email,
-        "company": company,
-        "phone": phone,
-        "country": country,
-        "question": user_input,
-        "response": assistant_response
-    })
+        # Save to chat history
+        st.session_state.chat_history.append({
+            "role": "assistant",
+            "content": assistant_response
+        })
 
-
+        # Log to Google Sheets
+        log_to_google_sheets({
+            "name": name,
+            "email": email,
+            "company": company,
+            "phone": phone,
+            "country": country,
+            "question": user_input,
+            "response": assistant_response
+        })
