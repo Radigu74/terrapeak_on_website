@@ -413,7 +413,7 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 # ==============================================
 # OpenAI Communication Function (uses Chat API)
 # ==============================================
-def get_completion_from_messages(user_messages, model="gpt-4-turbo", temperature=0, max_history=6):
+def get_completion_from_messages(user_messages, model="gpt-3.5-turbo-0125", temperature=0, max_history=6):
     try:
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
