@@ -251,32 +251,6 @@ st.markdown(
         margin: auto;
         padding: 10px;
     }
-    /* User message bubble styling */
-    .user-message {
-        background-color: #2f5d50;
-        color: #f4f4f2;
-        padding: 10px;
-        border-radius: 21px;
-        margin: 10px 0;
-        text-align: right;
-        max-width: 70%;
-        float: right;
-        clear: both;
-        font-family: sans-serif;
-    }
-    /* Bot message bubble styling */
-    .bot-message {
-        background-color: #1d3e5e;
-        color: #f4f4f2;
-        padding: 10px;
-        border-radius: 21px;
-        margin: 10px 0;
-        text-align: left;
-        max-width: 70%;
-        float: left;
-        clear: both;
-        font-family: sans-serif;
-    }
     /* Input box styling: override Streamlit's default input style */
     input, textarea {
         border-radius: 21px !important;
