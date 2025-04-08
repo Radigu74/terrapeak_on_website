@@ -128,7 +128,7 @@ articles = [
 # ============================================================
 # STEP 2: Create an Embedding Function Using a Client Instance
 # ============================================================
-def get_embedding(text, model="text-embedding-ada-002"):
+def get_embedding(text, model="text-embedding-3-small"):
     """
     Generate a numeric embedding for a given text using OpenAI's new SDK (v1.x).
     """
