@@ -477,7 +477,7 @@ if st.button("Submit Details", key="submit_button"):
     # ✅ Personalized welcome message
     st.session_state.chat_history.append({
         "role": "assistant",
-        "content": f"Hi {name}! 👋 I’m Terra, your virtual assistant here at TerraPeak Consulting. How can I support your business today?"
+        "content": f"Hi {name}! 👋 I’m Terra, your virtual assistant here at TerraPeak. How can I help you today?"
     })
    
 # ========================================================
