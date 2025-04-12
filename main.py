@@ -125,6 +125,10 @@ articles = [
     }
 ]
 
+LIVE_CHAT_KEYWORDS = [
+    "speak", "talk", "call", "consultant", "real person", "human", "live chat", "contact someone"
+]
+
 # ============================================================
 # STEP 2: Create an Embedding Function Using a Client Instance
 # ============================================================
