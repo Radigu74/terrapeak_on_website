@@ -125,10 +125,6 @@ articles = [
     }
 ]
 
-LIVE_CHAT_KEYWORDS = [
-    "speak", "talk", "call", "consultant", "real person", "human", "live chat", "contact someone"
-]
-
 # ============================================================
 # STEP 2: Create an Embedding Function Using a Client Instance
 # ============================================================
@@ -376,6 +372,10 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 (Keep responses helpful, natural, and client-centered. Always offer a next step.)
 """}
     ]
+
+LIVE_CHAT_KEYWORDS = [
+    "speak", "talk", "call", "consultant", "real person", "human", "live chat", "contact someone"
+]
 
 # ==============================================
 # OpenAI Communication Function (uses Chat API)
