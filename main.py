@@ -531,54 +531,54 @@ if st.session_state.chat_enabled:
 
         # === CONSULTANT HAND-OFF LOGIC WITH NAME & STYLED CTA ===
 
-# Get user's name from earlier form input
-user_name = name.strip().split(" ")[0].capitalize() if name else "there"
+        # Get user's name from earlier form input
+        user_name = name.strip().split(" ")[0].capitalize() if name else "there"
 
-# Get last few user messages for analysis
-recent_user_messages = [m["content"].lower() for m in st.session_state.chat_history if m["role"] == "user"]
+        # Get last few user messages for analysis
+        recent_user_messages = [m["content"].lower() for m in st.session_state.chat_history if m["role"] == "user"]
 
-# Styled button with emoji and link
-styled_cta = f"""
-<div style='
-    background-color: #2f5d50;
-    color: #ffffff;
-    padding: 14px;
-    border-radius: 12px;
-    text-align: center;
-    width: fit-content;
-    font-weight: bold;
-    font-family: sans-serif;
-    margin-top: 10px;
-'>
-    📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
-        Book a 30-Minute Call with TerraPeak
-    </a>
-</div>
-"""
+        # Styled button with emoji and link
+        styled_cta = f"""
+        <div style='
+            background-color: #2f5d50;
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            width: fit-content;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-top: 10px;
+        '>
+            📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
+                Book a 30-Minute Call with TerraPeak
+            </a>
+        </div>
+        """
 
-# Trigger if the last user message contains a live chat keyword
-if recent_user_messages and any(keyword in recent_user_messages[-1] for keyword in LIVE_CHAT_KEYWORDS):
-    st.session_state.chat_history.append({
-        "role": "assistant",
-        "content": f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:\n\n{styled_cta}"
-    })
+        # Trigger if the last user message contains a live chat keyword
+        if recent_user_messages and any(keyword in recent_user_messages[-1] for keyword in LIVE_CHAT_KEYWORDS):
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "content": f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:\n\n{styled_cta}"
+            })
 
-# Trigger automatically after 6 user messages (only once)
-elif len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
-    st.session_state.chat_history.append({
-        "role": "assistant",
-        "content": f"{user_name}, if you'd prefer to speak directly with a TerraPeak consultant, feel free to book a time below:\n\n{styled_cta}"
-    })
-    st.session_state.consultant_offer_shown = True
+        # Trigger automatically after 6 user messages (only once)
+        elif len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "content": f"{user_name}, if you'd prefer to speak directly with a TerraPeak consultant, feel free to book a time below:\n\n{styled_cta}"
+            })
+            st.session_state.consultant_offer_shown = True
 
-# Log to Google Sheets
-log_to_google_sheets({
-    "name": name,
-    "email": email,
-    "company": company,
-    "phone": phone,
-    "country": country,
-    "question": user_input,
-    "response": assistant_response
-})
+        # Log to Google Sheets
+        log_to_google_sheets({
+            "name": name,
+            "email": email,
+            "company": company,
+            "phone": phone,
+            "country": country,
+            "question": user_input,
+            "response": assistant_response
+        })
 
