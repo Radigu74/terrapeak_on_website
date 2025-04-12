@@ -557,7 +557,7 @@ styled_cta = f"""
 """
 
 # Trigger if the last user message contains a live chat keyword
-if any(keyword in recent_user_messages[-1] for keyword in LIVE_CHAT_KEYWORDS):
+if recent_user_messages and any(keyword in recent_user_messages[-1] for keyword in LIVE_CHAT_KEYWORDS):
     st.session_state.chat_history.append({
         "role": "assistant",
         "content": f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:\n\n{styled_cta}"
