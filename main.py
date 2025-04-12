@@ -571,14 +571,14 @@ elif len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.sessi
     })
     st.session_state.consultant_offer_shown = True
 
-        # Log to Google Sheets
-        log_to_google_sheets({
-            "name": name,
-            "email": email,
-            "company": company,
-            "phone": phone,
-            "country": country,
-            "question": user_input,
-            "response": assistant_response
-        })
+# Log to Google Sheets
+log_to_google_sheets({
+    "name": name,
+    "email": email,
+    "company": company,
+    "phone": phone,
+    "country": country,
+    "question": user_input,
+    "response": assistant_response
+})
 
