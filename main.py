@@ -510,7 +510,33 @@ if st.session_state.chat_enabled:
             "content": user_input
         })
 
-        # Assistant response
+        # 🔍 EARLY EXIT if user wants a consultant
+        if any(keyword in user_input.lower() for keyword in LIVE_CHAT_KEYWORDS):
+            user_name = name.strip().split(" ")[0].capitalize() if name else "there"
+
+            styled_cta = f"""<div style='
+                background-color: #2f5d50;
+                color: #ffffff;
+                padding: 14px;
+                border-radius: 12px;
+                text-align: center;
+                width: fit-content;
+                font-weight: bold;
+                font-family: sans-serif;
+                margin-top: 10px;
+            '>
+            📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
+                Book a 30-Minute Call with TerraPeak
+            </a>
+            </div>"""
+
+            with st.chat_message("assistant", avatar="🌍"):
+                st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
+                st.markdown(styled_cta, unsafe_allow_html=True)
+
+            return  # ✅ STOP here — don't trigger GPT
+
+        # === GPT ASSISTANT RESPONSE (only runs if no keyword matched) ===
         rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
         assistant_response = get_completion_from_messages([{
             "role": "user",
@@ -525,8 +551,7 @@ if st.session_state.chat_enabled:
             "content": assistant_response
         })
 
-        # ========== BEGIN CONSULTANT HAND-OFF (correctly indented) ==========
-
+        # === CTA TRIGGER AFTER 6 MESSAGES (only if not already shown) ===
         user_name = name.strip().split(" ")[0].capitalize() if name else "there"
         recent_user_messages = [m["content"].lower() for m in st.session_state.chat_history if m["role"] == "user"]
 
@@ -546,19 +571,13 @@ if st.session_state.chat_enabled:
         </a>
         </div>"""
 
-        # 🔥 This trigger will now work!
-        if recent_user_messages and any(keyword in recent_user_messages[-1] for keyword in LIVE_CHAT_KEYWORDS):
-            with st.chat_message("assistant", avatar="🌍"):
-                st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
-                st.markdown(styled_cta, unsafe_allow_html=True)
-
-        elif len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
+        if len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
             with st.chat_message("assistant", avatar="🌍"):
                 st.markdown(f"{user_name}, if you'd prefer to speak directly with a TerraPeak consultant, feel free to book a time below:", unsafe_allow_html=True)
                 st.markdown(styled_cta, unsafe_allow_html=True)
             st.session_state.consultant_offer_shown = True
 
-        # ✅ Log only after all logic runs
+        # ✅ Log to Google Sheets only when GPT was triggered
         log_to_google_sheets({
             "name": name,
             "email": email,
@@ -567,5 +586,7 @@ if st.session_state.chat_enabled:
             "country": country,
             "question": user_input,
             "response": assistant_response
+        })
+
         })
 
