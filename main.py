@@ -587,6 +587,3 @@ if st.session_state.chat_enabled:
             "question": user_input,
             "response": assistant_response
         })
-
-        })
-
