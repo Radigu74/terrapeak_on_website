@@ -585,6 +585,8 @@ if st.session_state.chat_enabled:
                 "response": "[CTA Triggered – No GPT reply]",
                 "intent": intent,
                 "cta_triggered": "yes"
+                "message_number": message_number,
+                "session_id": st.session_state.session_id
             })                
 
             st.stop()  # ✅ Skip GPT if it's a handoff
@@ -641,4 +643,6 @@ if st.session_state.chat_enabled:
             "response": assistant_response,
             "intent": intent,
             "cta_triggered": "no"
+            "message_number": message_number,
+            "session_id": st.session_state.session_id
         })
