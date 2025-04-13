@@ -63,6 +63,10 @@ def log_to_google_sheets(data):
             data.get("country", ""),
             data.get("question", ""),
             data.get("response", "")
+            data.get("intent", ""),
+            data.get("cta_triggered", ""),
+            data.get("message_number", ""),
+            data.get("session_id", "")
         ]
 
         sheet.append_row(row)
