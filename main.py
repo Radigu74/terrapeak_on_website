@@ -642,7 +642,7 @@ if st.session_state.chat_enabled:
             "question": user_input,
             "response": assistant_response,
             "intent": intent,
-            "cta_triggered": "no"
+            "cta_triggered": "no",
             "message_number": message_number,
             "session_id": st.session_state.session_id
         })
