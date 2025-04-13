@@ -377,6 +377,32 @@ LIVE_CHAT_KEYWORDS = [
     "speak", "talk", "call", "consultant", "real person", "human", "live chat", "contact someone"
 ]
 
+def detect_intent(user_input: str) -> str:
+    system_msg = (
+        "You are an assistant that classifies the intent of a user's message. "
+        "Return only one of the following: 'handoff', 'general', or 'other'."
+    )
+
+    prompt = f"""
+Message: "{user_input}"
+
+What is the user's intent? 
+Return just one word: handoff, general, or other.
+"""
+
+    try:
+        response = get_completion_from_messages([
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": prompt}
+        ])
+        return response.strip().lower()
+    
+    except Exception:
+        lowered = user_input.lower()
+        if any(keyword in lowered for keyword in LIVE_CHAT_KEYWORDS):
+            return "handoff"
+        return "general"
+
 # ==============================================
 # OpenAI Communication Function (uses Chat API)
 # ==============================================
@@ -510,8 +536,11 @@ if st.session_state.chat_enabled:
             "content": user_input
         })
 
-        # 🔍 EARLY EXIT if user wants a consultant
-        if any(keyword in user_input.lower() for keyword in LIVE_CHAT_KEYWORDS):
+        # 🔍 INTENT DETECTION with GPT + fallback
+        intent = detect_intent(user_input)
+        print("Detected intent:", intent)  # Optional debug
+
+        if intent == "handoff":
             user_name = name.strip().split(" ")[0].capitalize() if name else "there"
 
             styled_cta = f"""<div style='
@@ -534,9 +563,9 @@ if st.session_state.chat_enabled:
                 st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
                 st.markdown(styled_cta, unsafe_allow_html=True)
 
-            st.stop()  # ✅ STOP here — don't trigger GPT
+            st.stop()  # ✅ Skip GPT if it's a handoff
 
-        # === GPT ASSISTANT RESPONSE (only runs if no keyword matched) ===
+        # === GPT ASSISTANT RESPONSE ===
         rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
         assistant_response = get_completion_from_messages([{
             "role": "user",
@@ -551,7 +580,7 @@ if st.session_state.chat_enabled:
             "content": assistant_response
         })
 
-        # === CTA TRIGGER AFTER 6 MESSAGES (only if not already shown) ===
+        # === OPTIONAL CTA after 6 messages ===
         user_name = name.strip().split(" ")[0].capitalize() if name else "there"
         recent_user_messages = [m["content"].lower() for m in st.session_state.chat_history if m["role"] == "user"]
 
@@ -577,7 +606,7 @@ if st.session_state.chat_enabled:
                 st.markdown(styled_cta, unsafe_allow_html=True)
             st.session_state.consultant_offer_shown = True
 
-        # ✅ Log to Google Sheets only when GPT was triggered
+        # ✅ Log to Google Sheets
         log_to_google_sheets({
             "name": name,
             "email": email,
