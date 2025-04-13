@@ -534,7 +534,7 @@ if st.session_state.chat_enabled:
                 st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
                 st.markdown(styled_cta, unsafe_allow_html=True)
 
-            return  # ✅ STOP here — don't trigger GPT
+            st.stop()  # ✅ STOP here — don't trigger GPT
 
         # === GPT ASSISTANT RESPONSE (only runs if no keyword matched) ===
         rag_prompt = build_prompt_with_context(user_input.strip(), k=2)
