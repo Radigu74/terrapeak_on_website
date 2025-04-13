@@ -563,6 +563,19 @@ if st.session_state.chat_enabled:
                 st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
                 st.markdown(styled_cta, unsafe_allow_html=True)
 
+                # ✅ LOG that CTA was triggered
+            log_to_google_sheets({
+                "name": name,
+                "email": email,
+                "company": company,
+                "phone": phone,
+                "country": country,
+                "question": user_input,
+                "response": "[CTA Triggered – No GPT reply]",
+                "intent": intent,
+                "cta_triggered": "yes"
+            })                
+
             st.stop()  # ✅ Skip GPT if it's a handoff
 
         # === GPT ASSISTANT RESPONSE ===
@@ -614,5 +627,7 @@ if st.session_state.chat_enabled:
             "phone": phone,
             "country": country,
             "question": user_input,
-            "response": assistant_response
+            "response": assistant_response,
+            "intent": intent,
+            "cta_triggered": "no"
         })
