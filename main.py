@@ -14,6 +14,7 @@ import datetime
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from gspread.auth import authorize
+import uuid
 
 # =============================
 # Load environment variables
@@ -540,6 +541,11 @@ if st.session_state.chat_enabled:
             "role": "user",
             "content": user_input
         })
+
+        # ✅ Track how many messages the user has sent
+        message_number = len([
+            m for m in st.session_state.chat_history if m["role"] == "user"
+        ])
 
         # 🔍 INTENT DETECTION with GPT + fallback
         intent = detect_intent(user_input)
