@@ -259,6 +259,10 @@ st.markdown(
 # ============================
 # Session State Initialization
 # ============================
+# Ensure session_id is initialized for tracking
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())[:8]
+
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "chat_enabled" not in st.session_state:
