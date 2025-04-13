@@ -62,7 +62,7 @@ def log_to_google_sheets(data):
             data.get("phone", ""),
             data.get("country", ""),
             data.get("question", ""),
-            data.get("response", "")
+            data.get("response", ""),
             data.get("intent", ""),
             data.get("cta_triggered", ""),
             data.get("message_number", ""),
@@ -75,6 +75,7 @@ def log_to_google_sheets(data):
     except Exception as e:
         print(f"[Google Sheets Logging Error] {e}")
         return False
+
 
 # ====================================================
 # Hide Streamlit's default menu, header, and footer
