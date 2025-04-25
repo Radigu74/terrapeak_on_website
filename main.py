@@ -15,6 +15,7 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from gspread.auth import authorize
 import uuid
+from flask import Flask, request, jsonify
 
 # =============================
 # Load environment variables
@@ -650,3 +651,26 @@ if st.session_state.chat_enabled:
             "message_number": message_number,
             "session_id": st.session_state.session_id
         })
+
+# ==============================================
+# Flask API endpoint for FB → Chatbot forwarding
+# ==============================================
+api = Flask(__name__)
+
+@api.route("/endpoint", methods=["POST"])
+def chatbot_endpoint():
+    payload = request.get_json(silent=True) or {}
+    user_message = payload.get("message", "")
+    if not user_message:
+        return jsonify({"error": "No message provided"}), 400
+
+    # Build RAG prompt + get GPT response
+    rag = build_prompt_with_context(user_message, k=2)
+    reply = get_completion_from_messages([{"role": "user", "content": rag}])
+
+    return jsonify({"reply": reply})
+
+if __name__ == "__main__":
+    # When you run `python main.py`, Streamlit will take over.
+    # To run the Flask API, use gunicorn: `gunicorn main:api`
+    pass
