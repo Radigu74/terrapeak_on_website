@@ -32,17 +32,6 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # ===========================
 print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
-import time
-# initial messge
-INITIAL_WELCOME_MSG = "Hi there! I'm Terra, your virtual assistant. Ask me anything about AI tools, automation, or business growth strategies"
-
-# Follow-up messge if no engagement
-FOLLOWUP_MSG = (
-    "Not sure where to begin?\n"
-    "You can ask me about AI automation, lead generation, or expanding you business into new markets\n"
-    "Just type your question, or say \"menu\" to see what I can help with."
-)
-
 def authenticate_google_sheets():
     creds = Credentials(
         None,
@@ -395,15 +384,6 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 """}
     ]
 
-# ✅ Show welcome message only once
-if "has_shown_welcome" not in st.session_state:
-    st.session_state.chat_history.append({
-        "role": "assistant",
-        "content": INITIAL_WELCOME_MSG
-    })
-    st.session_state.has_shown_welcome = True
-    st.session_state.last_message_time = time.time()
-
 LIVE_CHAT_KEYWORDS = [
     "speak", "talk", "call", "consultant", "real person", "human", "live chat", "contact someone"
 ]
@@ -551,16 +531,6 @@ if st.session_state.chat_enabled:
     for msg in st.session_state.chat_history:
         with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "🌍"):
             st.markdown(msg["content"])
-
-# Check for inactivity
-if st.session_state.chat_enabled:
-    last_msg_time = st.session_state.get("last_message_time", time.time())
-    if time.time() - last_msg_time > 15 and not st.session_state.get("followup_sent", False):
-        st.session_state.chat_history.append({
-            "role": "assistant",
-            "content": FOLLOWUP_MSG
-        })
-        st.session_state.followup_sent = True
             
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
@@ -579,8 +549,7 @@ if st.session_state.chat_enabled:
 
         # ✅ Track how many messages the user has sent
         message_number = len([
-            m for m in st.session_state.chat_history
-            if m["role"] == "user"
+            m for m in st.session_state.chat_history if m["role"] == "user"
         ])
 
         # 🔍 INTENT DETECTION with GPT + fallback
@@ -607,13 +576,10 @@ if st.session_state.chat_enabled:
             </div>"""
 
             with st.chat_message("assistant", avatar="🌍"):
-                st.markdown(
-                    f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:",
-                    unsafe_allow_html=True
-                )
+                st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
                 st.markdown(styled_cta, unsafe_allow_html=True)
 
-            # ✅ LOG that CTA was triggered
+                # ✅ LOG that CTA was triggered
             log_to_google_sheets({
                 "name": name,
                 "email": email,
@@ -626,7 +592,7 @@ if st.session_state.chat_enabled:
                 "cta_triggered": "yes",
                 "message_number": message_number,
                 "session_id": st.session_state.session_id
-            })
+            })                
 
             st.stop()  # ✅ Skip GPT if it's a handoff
 
@@ -645,57 +611,46 @@ if st.session_state.chat_enabled:
             "content": assistant_response
         })
 
-# reset timer when user sends a message
-st.session_state.last_message_time = time.time()
-st.session_state.followup_sent = False
+        # === OPTIONAL CTA after 6 messages ===
+        user_name = name.strip().split(" ")[0].capitalize() if name else "there"
+        recent_user_messages = [m["content"].lower() for m in st.session_state.chat_history if m["role"] == "user"]
 
-# === OPTIONAL CTA after 6 messages ===
-user_name = name.strip().split(" ")[0].capitalize() if name else "there"
-recent_user_messages = [
-    m["content"].lower()
-    for m in st.session_state.chat_history
-    if m["role"] == "user"
-]
+        styled_cta = f"""<div style='
+            background-color: #2f5d50;
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            width: fit-content;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-top: 10px;
+        '>
+        📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
+            Book a 30-Minute Call with TerraPeak
+        </a>
+        </div>"""
 
-styled_cta = f"""<div style='
-    background-color: #2f5d50;
-    color: #ffffff;
-    padding: 14px;
-    border-radius: 12px;
-    text-align: center;
-    width: fit-content;
-    font-weight: bold;
-    font-family: sans-serif;
-    margin-top: 10px;
-'>
-📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
-    Book a 30-Minute Call with TerraPeak
-</a>
-</div>"""
+        if len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
+            with st.chat_message("assistant", avatar="🌍"):
+                st.markdown(f"{user_name}, if you'd prefer to speak directly with a TerraPeak consultant, feel free to book a time below:", unsafe_allow_html=True)
+                st.markdown(styled_cta, unsafe_allow_html=True)
+            st.session_state.consultant_offer_shown = True
 
-if len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
-    with st.chat_message("assistant", avatar="🌍"):
-        st.markdown(
-            f"{user_name}, if you'd prefer to speak directly with a TerraPeak consultant, feel free to book a time below:",
-            unsafe_allow_html=True
-        )
-        st.markdown(styled_cta, unsafe_allow_html=True)
-    st.session_state.consultant_offer_shown = True
-
-# ✅ Log to Google Sheets
-log_to_google_sheets({
-    "name": name,
-    "email": email,
-    "company": company,
-    "phone": phone,
-    "country": country,
-    "question": user_input,
-    "response": assistant_response,
-    "intent": intent,
-    "cta_triggered": "no",
-    "message_number": message_number,
-    "session_id": st.session_state.session_id
-})
+        # ✅ Log to Google Sheets
+        log_to_google_sheets({
+            "name": name,
+            "email": email,
+            "company": company,
+            "phone": phone,
+            "country": country,
+            "question": user_input,
+            "response": assistant_response,
+            "intent": intent,
+            "cta_triggered": "no",
+            "message_number": message_number,
+            "session_id": st.session_state.session_id
+        })
 
 # ==============================================
 # Flask API endpoint for FB → Chatbot forwarding
