@@ -652,47 +652,50 @@ st.session_state.followup_sent = False
 # === OPTIONAL CTA after 6 messages ===
 user_name = name.strip().split(" ")[0].capitalize() if name else "there"
 recent_user_messages = [
-    m["content"].lower() 
-    for m in st.session_state.chat_history 
+    m["content"].lower()
+    for m in st.session_state.chat_history
     if m["role"] == "user"
 ]
-    
-        styled_cta = f"""<div style='
-            background-color: #2f5d50;
-            color: #ffffff;
-            padding: 14px;
-            border-radius: 12px;
-            text-align: center;
-            width: fit-content;
-            font-weight: bold;
-            font-family: sans-serif;
-            margin-top: 10px;
-        '>
-        📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
-            Book a 30-Minute Call with TerraPeak
-        </a>
-        </div>"""
 
-        if len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
-            with st.chat_message("assistant", avatar="🌍"):
-                st.markdown(f"{user_name}, if you'd prefer to speak directly with a TerraPeak consultant, feel free to book a time below:", unsafe_allow_html=True)
-                st.markdown(styled_cta, unsafe_allow_html=True)
-            st.session_state.consultant_offer_shown = True
+styled_cta = f"""<div style='
+    background-color: #2f5d50;
+    color: #ffffff;
+    padding: 14px;
+    border-radius: 12px;
+    text-align: center;
+    width: fit-content;
+    font-weight: bold;
+    font-family: sans-serif;
+    margin-top: 10px;
+'>
+📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
+    Book a 30-Minute Call with TerraPeak
+</a>
+</div>"""
 
-        # ✅ Log to Google Sheets
-        log_to_google_sheets({
-            "name": name,
-            "email": email,
-            "company": company,
-            "phone": phone,
-            "country": country,
-            "question": user_input,
-            "response": assistant_response,
-            "intent": intent,
-            "cta_triggered": "no",
-            "message_number": message_number,
-            "session_id": st.session_state.session_id
-        })
+if len(recent_user_messages) >= 6 and "consultant_offer_shown" not in st.session_state:
+    with st.chat_message("assistant", avatar="🌍"):
+        st.markdown(
+            f"{user_name}, if you'd prefer to speak directly with a TerraPeak consultant, feel free to book a time below:",
+            unsafe_allow_html=True
+        )
+        st.markdown(styled_cta, unsafe_allow_html=True)
+    st.session_state.consultant_offer_shown = True
+
+# ✅ Log to Google Sheets
+log_to_google_sheets({
+    "name": name,
+    "email": email,
+    "company": company,
+    "phone": phone,
+    "country": country,
+    "question": user_input,
+    "response": assistant_response,
+    "intent": intent,
+    "cta_triggered": "no",
+    "message_number": message_number,
+    "session_id": st.session_state.session_id
+})
 
 # ==============================================
 # Flask API endpoint for FB → Chatbot forwarding
