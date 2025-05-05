@@ -38,7 +38,7 @@ INITIAL_WELCOME_MSG = "Hi there! I'm Terra, your virtual assistant. Ask me anyth
 
 # Follow-up messge if no engagement
 FOLLOWUP_MSG = (
-    "Not sure where to begin?\n
+    "Not sure where to begin?\n"
     "You can ask me about AI automation, lead generation, or expanding you business into new markets\n"
     "Just type your question, or say \"menu\" to see what I can help with."
 )
