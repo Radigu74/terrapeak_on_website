@@ -579,7 +579,8 @@ if st.session_state.chat_enabled:
 
         # ✅ Track how many messages the user has sent
         message_number = len([
-            m for m in st.session_state.chat_history if m["role"] == "user"
+            m for m in st.session_state.chat_history
+            if m["role"] == "user"
         ])
 
         # 🔍 INTENT DETECTION with GPT + fallback
@@ -606,10 +607,13 @@ if st.session_state.chat_enabled:
             </div>"""
 
             with st.chat_message("assistant", avatar="🌍"):
-                st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
+                st.markdown(
+                    f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:",
+                    unsafe_allow_html=True
+                )
                 st.markdown(styled_cta, unsafe_allow_html=True)
 
-                # ✅ LOG that CTA was triggered
+            # ✅ LOG that CTA was triggered
             log_to_google_sheets({
                 "name": name,
                 "email": email,
@@ -622,7 +626,7 @@ if st.session_state.chat_enabled:
                 "cta_triggered": "yes",
                 "message_number": message_number,
                 "session_id": st.session_state.session_id
-            })                
+            })
 
             st.stop()  # ✅ Skip GPT if it's a handoff
 
@@ -645,10 +649,14 @@ if st.session_state.chat_enabled:
 st.session_state.last_message_time = time.time()
 st.session_state.followup_sent = False
 
-        # === OPTIONAL CTA after 6 messages ===
-        user_name = name.strip().split(" ")[0].capitalize() if name else "there"
-        recent_user_messages = [m["content"].lower() for m in st.session_state.chat_history if m["role"] == "user"]
-
+# === OPTIONAL CTA after 6 messages ===
+user_name = name.strip().split(" ")[0].capitalize() if name else "there"
+recent_user_messages = [
+    m["content"].lower() 
+    for m in st.session_state.chat_history 
+    if m["role"] == "user"
+]
+    
         styled_cta = f"""<div style='
             background-color: #2f5d50;
             color: #ffffff;
