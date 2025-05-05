@@ -551,6 +551,16 @@ if st.session_state.chat_enabled:
     for msg in st.session_state.chat_history:
         with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "🌍"):
             st.markdown(msg["content"])
+
+# Check for inactivity
+if st.session_state.chat_enabled:
+    last_msg_time = st.session_state.get("last_message_time", time.time())
+    if time.time() - last_msg_time > 15 and not st.session_state.get("followup_sent", False):
+        st.session_state.chat_history.append({
+            "role": "assistant",
+            "content": FOLLOWUP_MSG
+        })
+        st.session_state.followup_sent = True
             
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
@@ -630,6 +640,10 @@ if st.session_state.chat_enabled:
             "role": "assistant",
             "content": assistant_response
         })
+
+# reset timer when user sends a message
+st.session_state.last_message_time = time.time()
+st.session_state.followup_sent = False
 
         # === OPTIONAL CTA after 6 messages ===
         user_name = name.strip().split(" ")[0].capitalize() if name else "there"
