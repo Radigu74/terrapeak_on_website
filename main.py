@@ -34,7 +34,7 @@ print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
 import time
 # initial messge
-INITIAL_WELCOME_MSG = "Hi there! I'm Terra, your virtual assistant. Ask me anything about AI tools, automation, or business growth strategies
+INITIAL_WELCOME_MSG = "Hi there! I'm Terra, your virtual assistant. Ask me anything about AI tools, automation, or business growth strategies"
 
 # Follow-up messge if no engagement
 FOLLOWUP_MSG = (
