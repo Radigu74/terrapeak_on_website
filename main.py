@@ -32,6 +32,17 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # ===========================
 print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
+import time
+# initial messge
+INITIAL_WELCOME_MSG = "Hi there! I'm Terra, your virtual assistant. Ask me anything about AI tools, automation, or business growth strategies
+
+# Follow-up messge if no engagement
+FOLLOWUP_MSG = (
+    "Not sure where to begin?\n
+    "You can ask me about AI automation, lead generation, or expanding you business into new markets\n"
+    "Just type your question, or say \"menu\" to see what I can help with."
+)
+
 def authenticate_google_sheets():
     creds = Credentials(
         None,
@@ -383,6 +394,15 @@ Founded by adventurers who thrive in the wild, we bring the same spirit of explo
 (Keep responses helpful, natural, and client-centered. Always offer a next step.)
 """}
     ]
+
+# ✅ Show welcome message only once
+if "has_shown_welcome" not in st.session_state:
+    st.session_state.chat_history.append({
+        "role": "assistant",
+        "content": INITIAL_WELCOME_MSG
+    })
+    st.session_state.has_shown_welcome = True
+    st.session_state.last_message_time = time.time()
 
 LIVE_CHAT_KEYWORDS = [
     "speak", "talk", "call", "consultant", "real person", "human", "live chat", "contact someone"
