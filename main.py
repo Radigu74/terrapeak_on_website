@@ -22,23 +22,6 @@ from flask import Flask, request, jsonify
 # ============================
 _ = load_dotenv(find_dotenv())
 
-# ===========================
-# Immediate Welcome Banner (above chatbot)
-# ===========================
-if not st.session_state.get("welcome_banner_shown", False):
-    with st.container():
-        st.markdown(
-            """
-            <div style="background-color: #E0E0DB; padding: 15px; border-radius: 12px; color: #131313; font-family: sans-serif;">
-                <strong>Welcome to TerraPeak Group!</strong><br>
-                I’m Terra, your virtual assistant.<br>
-                Ask me anything about AI chatbots, social media automation, or SME consulting services.
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-    st.session_state.welcome_banner_shown = True
-
 # ===================
 # OpenAI API Key
 # ===================
@@ -286,10 +269,6 @@ if "chat_history" not in st.session_state:
     
 if "chat_enabled" not in st.session_state:
     st.session_state.chat_enabled = False  # Set to True to allow input field to appear
-
-# ✅ Add this new welcome flag initialization
-if "welcome_shown" not in st.session_state:
-    st.session_state.welcome_shown = False
 
 # Initialize chat context
 if "chat_context" not in st.session_state:
