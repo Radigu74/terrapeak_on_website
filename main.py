@@ -273,6 +273,21 @@ if "chat_enabled" not in st.session_state:
 if "welcome_shown" not in st.session_state:
     st.session_state.welcome_shown = False
 
+# ================================
+# Step 2: Show Welcome Message Once
+# ================================
+if st.session_state.chat_enabled and not st.session_state.welcome_shown:
+    welcome_message = "👋 Hi there! I’m Terra, the virtual assistant at TerraPeak Group. Ask me anything about AI chatbots, social media automation, or consulting support for your business."
+    
+    # Append welcome message to chat history
+    st.session_state.chat_history.append({
+        "role": "assistant",
+        "content": welcome_message
+    })
+    
+    st.session_state.welcome_shown = True
+    st.rerun()
+
 # Initialize chat context
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
