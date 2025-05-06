@@ -274,21 +274,6 @@ if "chat_enabled" not in st.session_state:
 if "welcome_shown" not in st.session_state:
     st.session_state.welcome_shown = False
 
-# ================================
-# Show Welcome Message Immediately
-# ================================
-if not st.session_state.welcome_shown:
-    st.markdown(
-        """
-        <div style="background-color:#E0E0DB; padding:15px; border-radius:10px; margin-bottom:20px; font-family:sans-serif;">
-            <strong>Welcome to TerraPeak Group!</strong><br>
-            I’m Terra, your virtual assistant. Ask me anything about AI chatbots, social media automation, or SME consulting services. I’m here to help!
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-    st.session_state.welcome_shown = True
-
 # Initialize chat context
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
@@ -470,6 +455,23 @@ def get_completion_from_messages(user_messages, model="gpt-3.5-turbo-0125", temp
     except Exception as e:
         logging.exception("Unexpected error occurred.")
         return "Oops, an unexpected error occurred. Please try again or contact support."
+
+# ===========================
+# Immediate Welcome Banner (above chatbot)
+# ===========================
+if not st.session_state.get("welcome_banner_shown", False):
+    with st.container():
+        st.markdown(
+            """
+            <div style="background-color: #E0E0DB; padding: 15px; border-radius: 12px; color: #131313; font-family: sans-serif;">
+                <strong>Welcome to TerraPeak Group!</strong><br>
+                I’m Terra, your virtual assistant.<br>
+                Ask me anything about AI chatbots, social media automation, or SME consulting services.
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    st.session_state.welcome_banner_shown = True
 
 # ===========================
 # UI PURPOSE for User Details Input
