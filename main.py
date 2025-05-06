@@ -22,6 +22,36 @@ from flask import Flask, request, jsonify
 # ============================
 _ = load_dotenv(find_dotenv())
 
+st.markdown("""
+<style>
+/* User messages aligned to the right */
+.stChatMessage:has([data-testid="stChatMessageAvatarUser"]) {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+}
+
+/* Style the user's message bubble */
+[data-testid="stChatMessageAvatarUser"] + [data-testid="stChatMessageContent"] {
+    text-align: right;
+    background-color: #dbe9f4;
+    border-radius: 12px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    max-width: 80%;
+}
+
+/* Style the assistant's message bubble */
+[data-testid="stChatMessageAvatarAssistant"] + [data-testid="stChatMessageContent"] {
+    background-color: #f1f0f0;
+    border-radius: 12px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    max-width: 80%;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # ===================
 # OpenAI API Key
 # ===================
