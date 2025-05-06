@@ -269,6 +269,10 @@ if "chat_history" not in st.session_state:
 if "chat_enabled" not in st.session_state:
     st.session_state.chat_enabled = False  # Set to True to allow input field to appear
 
+# ✅ Add this new welcome flag initialization
+if "welcome_shown" not in st.session_state:
+    st.session_state.welcome_shown = False
+
 # Initialize chat context
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
