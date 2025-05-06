@@ -529,25 +529,9 @@ st.markdown("---")
 st.markdown("**💬 Chat with the Terrapeak Automated Consultant:**")
 
 if st.session_state.chat_enabled:
-   for msg in st.session_state.chat_history:
-    if msg["role"] == "user":
-        st.markdown(
-            f"""
-            <div style='background-color:#dbe9f4; color:#000; padding:10px 15px; border-radius:12px; margin-bottom:10px; max-width:80%; align-self:flex-end;'>
-                {msg["content"]}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-    else:
-        st.markdown(
-            f"""
-            <div style='background-color:#f0f0f0; color:#000; padding:10px 15px; border-radius:12px; margin-bottom:10px; max-width:80%;'>
-                {msg["content"]}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    for msg in st.session_state.chat_history:
+        with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "🌍"):
+            st.markdown(msg["content"])
             
 # ============================================
 # CUSTOM UI: Chat Input Field with Send Button
@@ -556,14 +540,13 @@ if st.session_state.chat_enabled:
     user_input = st.chat_input("Type your message here...")
 
     if user_input:
-        st.markdown(
-            f"""
-            <div style='background-color:#dbe9f4; color:#000; padding:10px 15px; border-radius:12px; margin-bottom:10px; max-width:80%; align-self:flex-end;'>
-                {user_input}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        with st.chat_message("user", avatar="👤"):
+            st.markdown(user_input)
+
+        st.session_state.chat_history.append({
+            "role": "user",
+            "content": user_input
+        })
 
         # ✅ Track how many messages the user has sent
         message_number = len([
@@ -593,17 +576,11 @@ if st.session_state.chat_enabled:
             </a>
             </div>"""
 
-            st.markdown(
-                f"""
-                <div style='background-color:#f0f0f0; color:#000; padding:10px 15px; border-radius:12px; margin-bottom:10px; max-width:80%;'>
-                    Absolutely, {user_name} 👋 I can connect you with one of our consultants:
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            st.markdown(styled_cta, unsafe_allow_html=True)
+            with st.chat_message("assistant", avatar="🌍"):
+                st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
+                st.markdown(styled_cta, unsafe_allow_html=True)
 
-            # ✅ LOG that CTA was triggered
+                # ✅ LOG that CTA was triggered
             log_to_google_sheets({
                 "name": name,
                 "email": email,
@@ -616,7 +593,7 @@ if st.session_state.chat_enabled:
                 "cta_triggered": "yes",
                 "message_number": message_number,
                 "session_id": st.session_state.session_id
-            })
+            })                
 
             st.stop()  # ✅ Skip GPT if it's a handoff
 
