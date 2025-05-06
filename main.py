@@ -24,16 +24,12 @@ _ = load_dotenv(find_dotenv())
 
 st.markdown("""
 <style>
-/* User messages aligned to the right */
-.stChatMessage:has([data-testid="stChatMessageAvatarUser"]) {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-start;
-}
-
-/* Style the user's message bubble */
-[data-testid="stChatMessageAvatarUser"] + [data-testid="stChatMessageContent"] {
+/* === USER MESSAGES === */
+div[data-testid="stChatMessage"] div:has(div:has(img[alt="👤"])) {
+    justify-content: flex-end;
     text-align: right;
+}
+div[data-testid="stChatMessage"] div:has(div:has(img[alt="👤"])) > div:nth-child(2) {
     background-color: #dbe9f4;
     border-radius: 12px;
     padding: 10px 15px;
@@ -41,8 +37,12 @@ st.markdown("""
     max-width: 80%;
 }
 
-/* Style the assistant's message bubble */
-[data-testid="stChatMessageAvatarAssistant"] + [data-testid="stChatMessageContent"] {
+/* === ASSISTANT MESSAGES === */
+div[data-testid="stChatMessage"] div:has(div:has(img[alt="🌍"])) {
+    justify-content: flex-start;
+    text-align: left;
+}
+div[data-testid="stChatMessage"] div:has(div:has(img[alt="🌍"])) > div:nth-child(2) {
     background-color: #f1f0f0;
     border-radius: 12px;
     padding: 10px 15px;
