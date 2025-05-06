@@ -266,6 +266,7 @@ if "session_id" not in st.session_state:
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+    
 if "chat_enabled" not in st.session_state:
     st.session_state.chat_enabled = False  # Set to True to allow input field to appear
 
@@ -274,19 +275,19 @@ if "welcome_shown" not in st.session_state:
     st.session_state.welcome_shown = False
 
 # ================================
-# Step 2: Show Welcome Message Once
+# Show Welcome Message Immediately
 # ================================
-if st.session_state.chat_enabled and not st.session_state.welcome_shown:
-    welcome_message = "👋 Hi there! I’m Terra, the virtual assistant at TerraPeak Group. Ask me anything about AI chatbots, social media automation, or consulting support for your business."
-    
-    # Append welcome message to chat history
-    st.session_state.chat_history.append({
-        "role": "assistant",
-        "content": welcome_message
-    })
-    
+if not st.session_state.welcome_shown:
+    st.markdown(
+        """
+        <div style="background-color:#E0E0DB; padding:15px; border-radius:10px; margin-bottom:20px; font-family:sans-serif;">
+            <strong>Welcome to TerraPeak Group!</strong><br>
+            I’m Terra, your virtual assistant. Ask me anything about AI chatbots, social media automation, or SME consulting services. I’m here to help!
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     st.session_state.welcome_shown = True
-    st.rerun()
 
 # Initialize chat context
 if "chat_context" not in st.session_state:
