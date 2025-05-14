@@ -601,7 +601,7 @@ if st.session_state.chat_enabled:
                 font-family: sans-serif;
                 margin-top: 10px;
             '>
-            📅 <a href="https://calendly.com/terrapeakgroup/introduction_call" target="_blank" style='color: white; text-decoration: none;'>
+            📅 <a href="https://calendly.com/terrapeakgroup/terrapeak_group_call" target="_blank" style='color: white; text-decoration: none;'>
                 Book a 30-Minute Call with TerraPeak
             </a>
             </div>"""
