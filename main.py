@@ -129,36 +129,56 @@ articles = [
     {
         "title": "TerraPeak Official Launch",
         "content": """March 5, 2025 – Singapore        
-    TerraPeak Consulting officially launches, offering expert-led market expansion, sales growth strategies, and practical AI integration to global businesses. Specializing in APAC market entry and growth support for Asian SMEs and family businesses, TerraPeak aims to redefine strategic growth.
-    Founded by experienced market and sales strategists, TerraPeak combines exploration with sustainable, strategic growth. With proven expertise, TerraPeak guides companies in harnessing AI to improve sales and operational efficiency.
-    Core Offerings:
-    - Expert Market Expansion into APAC
-    - Revenue-Driven Sales Growth
-    - Seamless AI Integration
-    - Family Business Growth & Transformation
-    Committed to responsible, ethical, and sustainable growth, TerraPeak offers tailored solutions ensuring long-term success and resilience. Businesses seeking expansion, transformation, and innovation are encouraged to reach out via connect@terrapeakgroup.com."""
+TerraPeak Consulting officially launches, offering expert-led market expansion, sales growth strategies, and practical AI integration to global businesses. Specializing in APAC market entry and growth support for Asian SMEs and family businesses, TerraPeak aims to redefine strategic growth.
+Founded by experienced market and sales strategists, TerraPeak combines exploration with sustainable, strategic growth. With proven expertise, TerraPeak guides companies in harnessing AI to improve sales and operational efficiency.
+Core Offerings:
+- Expert Market Expansion into APAC
+- Revenue-Driven Sales Growth
+- Seamless AI Integration
+- Family Business Growth & Transformation
+Committed to responsible, ethical, and sustainable growth, TerraPeak offers tailored solutions ensuring long-term success and resilience. Businesses seeking expansion, transformation, and innovation are encouraged to reach out via connect@terrapeakgroup.com."""
     },
     {
         "title": "Unlocking Opportunities: A Guide to Doing Business in Asia",
         "content": """Asia’s markets are diverse, each with distinct cultures, regulations, and consumer preferences. Successful market entry requires careful planning and cultural understanding.
-    1. Recognize Diversity: Each Asian market differs significantly. Independent research on consumer preferences, economic conditions, and regulatory landscapes is crucial.
-    2. Understand Cultural Nuances: Personal relationships and trust-building are essential. Face-to-face interactions and awareness of local business etiquette enhance partnership opportunities.
-    3. Navigate Regulations: Legal frameworks vary widely. Consulting local legal experts helps ensure compliance and protection, particularly for intellectual property rights.
-    4. Adapt Products and Services: Localization involves more than translation; products, pricing strategies, and marketing channels should align with local tastes and usage patterns.
-    5. Leverage Local Partnerships: Strategic partnerships offer invaluable market insights, reduce entry costs, and minimize risks associated with unfamiliar markets.
-    6. Invest in Talent and Training: Hiring skilled local talent and providing basic cross-cultural training ensures smooth operations and effective market penetration.
-    7. Stay Agile and Innovative: Regularly reassessing market trends and technological advancements allows businesses to remain competitive and responsive in dynamic Asian markets."""
+1. Recognize Diversity: Each Asian market differs significantly. Independent research on consumer preferences, economic conditions, and regulatory landscapes is crucial.
+2. Understand Cultural Nuances: Personal relationships and trust-building are essential. Face-to-face interactions and awareness of local business etiquette enhance partnership opportunities.
+3. Navigate Regulations: Legal frameworks vary widely. Consulting local legal experts helps ensure compliance and protection, particularly for intellectual property rights.
+4. Adapt Products and Services: Localization involves more than translation; products, pricing strategies, and marketing channels should align with local tastes and usage patterns.
+5. Leverage Local Partnerships: Strategic partnerships offer invaluable market insights, reduce entry costs, and minimize risks associated with unfamiliar markets.
+6. Invest in Talent and Training: Hiring skilled local talent and providing basic cross-cultural training ensures smooth operations and effective market penetration.
+7. Stay Agile and Innovative: Regularly reassessing market trends and technological advancements allows businesses to remain competitive and responsive in dynamic Asian markets."""
     },
     {
         "title": "AI & SMEs: 10 Key Stats Revealing Growth, Challenges, and Opportunities",
         "content": """Artificial Intelligence (AI) is rapidly changing how SMEs and family businesses operate, offering significant productivity gains, enhanced customer engagement, and cost efficiencies. Adoption among SMEs is growing quickly, with many businesses already using AI-powered solutions like chatbots, social media automation, and generative AI.
-    SMEs widely recognize AI’s benefits, including improved efficiency, automated marketing, sales forecasting, and better customer service. However, common concerns include knowledge gaps, high initial costs, uncertainty about return on investment (ROI), cybersecurity, and data privacy.
-    Practical, user-friendly AI solutions designed specifically for SMEs are making adoption easier. Cloud-based AI services (AI-as-a-Service) and generative AI tools have increased accessibility, allowing SMEs to automate processes, create engaging content, and enhance productivity without large upfront investments.
-    To fully leverage AI’s potential, SMEs should:
-    - Develop clear AI adoption strategies and roadmaps.
-    - Establish measurable KPIs to track AI effectiveness.
-    - Use cost-effective AI tools tailored to their specific business needs.
-    SMEs strategically adopting AI gain a competitive edge, achieve sustainable growth, and drive long-term efficiency."""
+SMEs widely recognize AI’s benefits, including improved efficiency, automated marketing, sales forecasting, and better customer service. However, common concerns include knowledge gaps, high initial costs, uncertainty about return on investment (ROI), cybersecurity, and data privacy.
+Practical, user-friendly AI solutions designed specifically for SMEs are making adoption easier. Cloud-based AI services (AI-as-a-Service) and generative AI tools have increased accessibility, allowing SMEs to automate processes, create engaging content, and enhance productivity without large upfront investments.
+To fully leverage AI’s potential, SMEs should:
+- Develop clear AI adoption strategies and roadmaps.
+- Establish measurable KPIs to track AI effectiveness.
+- Use cost-effective AI tools tailored to their specific business needs.
+SMEs strategically adopting AI gain a competitive edge, achieve sustainable growth, and drive long-term efficiency."""
+    },
+    {
+        "title": "SGD Digital Solutions Brochure",
+        "content": """At TerraPeak Group, automation is about working smarter, not harder. Our digital solutions empower businesses to embrace AI and automation without complexity. We offer:
+
+• AI Chatbots – Automate customer inquiries 24/7, improve lead generation, and boost customer service. Designed for SMEs and family businesses, our bots are platform-native, multilingual, and customizable (p.5-6).
+
+• Facebook & WhatsApp Bots – Handle FAQs, schedule appointments, track orders, and sync with Google Sheets or CRMs. Includes GDPR compliance, smart triggers, and analytics (p.6-7).
+
+• AI Social Media Automation – Auto-schedule content, generate captions, and track interactions. Our system improves engagement, visibility, and saves time (p.8-9).
+
+• AI Task Manager – Automate task assignments and team workflows. Keeps SMEs productive and aligned without admin overload (p.10).
+
+• AI Ordering Assistant – Smart (re)ordering engine that analyzes past sales to suggest stock quantities, highlight profit-makers, and avoid over/under-stocking (p.11-12).
+
+• Pricing Plans (Chatbot) – Starter, Growth, and Pro tiers ranging from 500 to unlimited interactions, with add-ons like CRM, training calls, and channel integrations (p.13-15).
+
+• AI Tool Pricing – Each tool is priced separately (e.g. S$1000 setup + S$250 monthly for the Ordering Assistant) with standalone options available (p.16).
+
+Contact: connect@terrapeakgroup.com | www.terrapeakgroup.com | +65 8061 9479 (p.17)"""
     }
 ]
 
