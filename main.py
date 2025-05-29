@@ -585,64 +585,59 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================
-# USER DETAIL INPUT SECTION
-# ============================
 if not st.session_state.get("chat_enabled", False):
+    with st.form("user_info_form"):
+        st.markdown('<div class="contact-header"><strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
+        st.markdown('<div class="contact-form">', unsafe_allow_html=True)
 
-    st.markdown('<div class="contact-header"><strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
-    st.markdown('<div class="contact-form">', unsafe_allow_html=True)
+        name = st.text_input("Enter your name:", key="name_input")
+        email = st.text_input("Enter your email:", key="email_input")
+        company = st.text_input("Enter your company name:", key="company_input")
+        phone = st.text_input("Enter your phone number:", key="phone_input")
+        country_list = sorted([country.name for country in pycountry.countries])
+        country = st.selectbox("Select Country", country_list, key="country_dropdown")
 
-    name = st.text_input("Enter your name:", key="name_input")
-    email = st.text_input("Enter your email:", key="email_input")
-    company = st.text_input("Enter your company name:", key="company_input")
-    phone = st.text_input("Enter your phone number:", key="phone_input")
-    country_list = sorted([country.name for country in pycountry.countries])
-    country = st.selectbox("Select Country", country_list, key="country_dropdown")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        submit = st.form_submit_button("Submit Details")
 
-    def is_valid_email(email):
-        return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+        if submit:
+            def is_valid_email(email):
+                return re.match(r"[^@]+@[^@]+\.[^@]+", email)
 
-    def is_valid_phone(phone):
-        return re.match(r"^\+?\d{10,15}$", phone)
+            def is_valid_phone(phone):
+                return re.match(r"^\+?\d{10,15}$", phone)
 
-    def validate_and_start():
-        if not is_valid_email(email):
-            return "❌ Invalid email."
-        if not is_valid_phone(phone):
-            return "❌ Invalid phone number."
+            if not is_valid_email(email):
+                st.error("❌ Invalid email.")
+            elif not is_valid_phone(phone):
+                st.error("❌ Invalid phone number.")
+            else:
+                # Store details in session state
+                st.session_state.name = name
+                st.session_state.email = email
+                st.session_state.company = company
+                st.session_state.phone = phone
+                st.session_state.country = country
+                st.session_state.chat_enabled = True
 
-        # ✅ Save to session state
-        st.session_state.name = name
-        st.session_state.email = email
-        st.session_state.company = company
-        st.session_state.phone = phone
-        st.session_state.country = country
-        st.session_state.chat_enabled = True
+                # Log to Google Sheets
+                log_to_google_sheets({
+                    "name": name,
+                    "email": email,
+                    "company": company,
+                    "phone": phone,
+                    "country": country
+                })
 
-        # ✅ Log to Google Sheets
-        log_to_google_sheets({
-            "name": name,
-            "email": email,
-            "company": company,
-            "phone": phone,
-            "country": country
-        })
+                # Optional greeting message
+                st.session_state.chat_history.append({
+                    "role": "assistant",
+                    "content": f"Hi {name}! I’m Terra, your virtual assistant. How can I help you today?"
+                })
 
-        return "✅ Details saved!"
+                st.success("✅ Details saved!")
 
-    if st.button("Submit Details", key="submit_button"):
-        message = validate_and_start()
-        if message.startswith("✅"):
-            st.success(message)
-            st.session_state.chat_history.append({
-                "role": "assistant",
-                "content": f"Hi {name}! I’m Terra, your virtual assistant. How can I help you today?"
-            })
-        else:
-            st.error(message)
 
    
 # ========================================================
