@@ -678,7 +678,7 @@ if st.session_state.chat_enabled:
         print("Detected intent:", intent)  # Optional debug
 
         if intent == "handoff":
-            user_name = name.strip().split(" ")[0].capitalize() if name else "there"
+            user_name = st.session_state.get("name", "there").strip().split(" ")[0].capitalize()
 
             styled_cta = f"""<div style='
                 background-color: #2f5d50;
@@ -733,7 +733,7 @@ if st.session_state.chat_enabled:
         })
 
         # === OPTIONAL CTA after 6 messages ===
-        user_name = name.strip().split(" ")[0].capitalize() if name else "there"
+        user_name = st.session_state.get("name", "there").strip().split(" ")[0].capitalize()
         recent_user_messages = [m["content"].lower() for m in st.session_state.chat_history if m["role"] == "user"]
 
         styled_cta = f"""<div style='
