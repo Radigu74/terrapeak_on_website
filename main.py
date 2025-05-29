@@ -124,7 +124,6 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # ====================================================
 # STEP 1: Define and Store Your Articles (RAG Source)
 # ====================================================
-# Your optimized TerraPeak launch article is stored here.
 articles = [
     {
         "title": "TerraPeak Official Launch",
@@ -163,24 +162,62 @@ SMEs strategically adopting AI gain a competitive edge, achieve sustainable grow
     {
         "title": "SGD Digital Solutions Brochure",
         "content": """At TerraPeak Group, automation is about working smarter, not harder. Our digital solutions empower businesses to embrace AI and automation without complexity. We offer:
-
 • AI Chatbots – Automate customer inquiries 24/7, improve lead generation, and boost customer service. Designed for SMEs and family businesses, our bots are platform-native, multilingual, and customizable (p.5-6).
-
 • Facebook & WhatsApp Bots – Handle FAQs, schedule appointments, track orders, and sync with Google Sheets or CRMs. Includes GDPR compliance, smart triggers, and analytics (p.6-7).
-
 • AI Social Media Automation – Auto-schedule content, generate captions, and track interactions. Our system improves engagement, visibility, and saves time (p.8-9).
-
 • AI Task Manager – Automate task assignments and team workflows. Keeps SMEs productive and aligned without admin overload (p.10).
-
 • AI Ordering Assistant – Smart (re)ordering engine that analyzes past sales to suggest stock quantities, highlight profit-makers, and avoid over/under-stocking (p.11-12).
-
 • Pricing Plans (Chatbot) – Starter, Growth, and Pro tiers ranging from 500 to unlimited interactions, with add-ons like CRM, training calls, and channel integrations (p.13-15).
-
 • AI Tool Pricing – Each tool is priced separately (e.g. S$1000 setup + S$250 monthly for the Ordering Assistant) with standalone options available (p.16).
-
 Contact: connect@terrapeakgroup.com | www.terrapeakgroup.com | +65 8061 9479 (p.17)"""
+    },
+    {
+        "title": "TerraPeak Pricing Plans",
+        "content": """TerraPeak offers transparent, scalable pricing for automation and AI services.
+
+CHATBOT PLANS
+
+Starter
+- One-time setup: S$750–1500
+- Monthly: S$100
+- 500 interactions/month
+- Best for: Micro-businesses or first-time chatbot users
+
+Growth (Recommended)
+- One-time setup: S$750–1500
+- Monthly: S$200
+- 2000 interactions/month
+- Best for: SMEs scaling up with light integration needs
+
+Pro
+- One-time setup: S$1500–3500
+- Monthly: S$400
+- Unlimited interactions
+- Best for: Companies needing full automation and CRM support
+
+OPTIONAL ADD-ONS (Starter and Growth)
+- Facebook / WhatsApp channel: S$75 per month per channel
+- Extra 1000 interactions: S$50 per month
+- One-time training or support call: S$100 per call
+- CRM Integration: Custom quote
+
+AI TOOL PRICING
+
+Article Generation
+- S$5 per article
+
+AI Task Manager
+- S$1000 setup
+- S$20 per user per month
+
+AI Ordering Assistant
+- S$1500 setup
+- S$250 per month
+
+All services include a 30-day money-back guarantee if not satisfied."""
     }
 ]
+
 
 # ============================================================
 # STEP 2: Create an Embedding Function Using a Client Instance
