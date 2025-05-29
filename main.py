@@ -761,18 +761,18 @@ if st.session_state.chat_enabled:
 
         # ✅ Log to Google Sheets
         log_to_google_sheets({
-            "name": name,
-            "email": email,
-            "company": company,
-            "phone": phone,
-            "country": country,
-            "question": user_input,
-            "response": assistant_response,
-            "intent": intent,
-            "cta_triggered": "no",
-            "message_number": message_number,
-            "session_id": st.session_state.session_id
-        })
+                "name": st.session_state.name,
+                "email": st.session_state.email,
+                "company": st.session_state.company,
+                "phone": st.session_state.phone,
+                "country": st.session_state.country,
+                "question": user_input,
+                "response": assistant_response,
+                "intent": intent,
+                "cta_triggered": "no",
+                "message_number": message_number,
+                "session_id": st.session_state.session_id
+            })
 
 # ==============================================
 # Flask API endpoint for FB → Chatbot forwarding
