@@ -24,7 +24,7 @@ _ = load_dotenv(find_dotenv())
 
 st.markdown("""
 <style>
-/* === USER MESSAGES === */
+/* === CHAT BUBBLES === */
 div[data-testid="stChatMessage"] div:has(div:has(img[alt="👤"])) {
     justify-content: flex-end;
     text-align: right;
@@ -36,8 +36,6 @@ div[data-testid="stChatMessage"] div:has(div:has(img[alt="👤"])) > div:nth-chi
     margin-bottom: 10px;
     max-width: 80%;
 }
-
-/* === ASSISTANT MESSAGES === */
 div[data-testid="stChatMessage"] div:has(div:has(img[alt="🌍"])) {
     justify-content: flex-start;
     text-align: left;
@@ -49,8 +47,52 @@ div[data-testid="stChatMessage"] div:has(div:has(img[alt="🌍"])) > div:nth-chi
     margin-bottom: 10px;
     max-width: 80%;
 }
+
+/* === FORM POSITIONING === */
+.contact-header {
+    margin-top: -80px;
+    padding-top: 0;
+}
+.contact-form {
+    margin-top: 0px;
+}
+form {
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+/* === LAYOUT FIXES === */
+.reportview-container, .main {
+    background-color: #f4f4f2;
+}
+div.block-container {
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+}
+
+/* === TERRAPEAK HEADER === */
+.header {
+    background-color: #E0E0DB;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.header img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+.header h1 {
+    display: inline;
+    margin-left: 10px;
+    vertical-align: middle;
+    color: #131313;
+    font-family: sans-serif;
+}
 </style>
 """, unsafe_allow_html=True)
+
 
 # ===================
 # OpenAI API Key
@@ -318,42 +360,6 @@ def build_prompt_with_context(user_query, k=None):
 
     return prompt
 
-
-# ================================================================
-# CUSTOM UI: Inject custom CSS for styling using Terrapeak colors 
-# ================================================================
-st.markdown(
-    """
-    <style>
-    /* Global Page Background */
-    .reportview-container, .main {
-        background-color: #f4f4f2;
-    }
-    /* Header styling */
-    .header {
-        background-color: #E0E0DB;
-        padding: 10px;
-        border-radius: 10px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .header img {
-        width: 50px;
-        height: 50px;
-        vertical-align: middle;
-    }
-    .header h1 {
-        display: inline;
-        margin-left: 10px;
-        vertical-align: middle;
-        color: #131313;
-        font-family: sans-serif;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
 # ============================
 # Session State Initialization
 # ============================
@@ -565,26 +571,6 @@ def get_completion_from_messages(user_messages, model="gpt-3.5-turbo-0125", temp
         logging.exception("Unexpected error occurred.")
         return "Oops, an unexpected error occurred. Please try again or contact support."
 
-# ===========================
-# UI PURPOSE for User Details Input
-# ===========================
-st.markdown(
-    """
-    <style>
-    /* This moves the header text upward */
-    .contact-header {
-        margin-top: -80px;
-        padding-top: 0;
-    }
-    /* This moves the input fields upward */
-    .contact-form {
-        margin-top: 0px;  /* Adjust this value as needed */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
 if not st.session_state.get("chat_enabled", False):
     with st.form("user_info_form"):
         st.markdown('<div class="contact-header"><strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
@@ -639,9 +625,6 @@ if not st.session_state.get("chat_enabled", False):
                 st.success("✅ Details saved!")
                 st.rerun()
 
-
-
-   
 # ========================================================
 # CUSTOM UI: Display Chat History with Styled Chat Bubbles
 # =========================================================
