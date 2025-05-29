@@ -701,19 +701,20 @@ if st.session_state.chat_enabled:
                 st.markdown(styled_cta, unsafe_allow_html=True)
 
                 # ✅ LOG that CTA was triggered
-            log_to_google_sheets({
-                "name": name,
-                "email": email,
-                "company": company,
-                "phone": phone,
-                "country": country,
-                "question": user_input,
-                "response": "[CTA Triggered – No GPT reply]",
-                "intent": intent,
-                "cta_triggered": "yes",
-                "message_number": message_number,
-                "session_id": st.session_state.session_id
-            })                
+                log_to_google_sheets({
+                    "name": st.session_state.name,
+                    "email": st.session_state.email,
+                    "company": st.session_state.company,
+                    "phone": st.session_state.phone,
+                    "country": st.session_state.country,
+                    "question": user_input,
+                    "response": assistant_response,
+                    "intent": intent,
+                    "cta_triggered": "no",
+                    "message_number": message_number,
+                    "session_id": st.session_state.session_id
+                 })
+   
 
             st.stop()  # ✅ Skip GPT if it's a handoff
 
