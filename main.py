@@ -247,16 +247,25 @@ def retrieve_relevant_articles(query, k=2):
 # ============================================================
 # STEP 5: Build a Prompt that Integrates the Retrieved Context
 # ============================================================
-def build_prompt_with_context(user_query, k=2):
+def build_prompt_with_context(user_query, k=None):
     """
-    Build a prompt that includes trimmed article context for faster GPT responses.
+    Build a prompt that includes relevant article context based on the user query.
+    Dynamically expands context if certain keywords like 'pricing' are detected.
     """
+    # Automatically expand context depth if pricing is mentioned
+    lowered = user_query.lower()
+    if k is None:
+        if "pricing" in lowered or "price" in lowered or "cost" in lowered:
+            k = 5  # Increase context range
+        else:
+            k = 2  # Default to 2 for general queries
+
     indices, _ = retrieve_relevant_articles(user_query, k)
 
     labeled_contexts = []
     for i in indices:
         article = articles[i]
-        trimmed_content = article["content"][:1000]  # Limit content to avoid long prompts
+        trimmed_content = article["content"][:1000]  # Optional trim
         labeled_context = f"Source: {article['title']}\n{trimmed_content}"
         labeled_contexts.append(labeled_context)
 
@@ -271,6 +280,7 @@ def build_prompt_with_context(user_query, k=2):
     )
 
     return prompt
+
 
 # ================================================================
 # CUSTOM UI: Inject custom CSS for styling using Terrapeak colors 
