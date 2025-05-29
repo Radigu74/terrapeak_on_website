@@ -637,6 +637,8 @@ if not st.session_state.get("chat_enabled", False):
                 })
 
                 st.success("✅ Details saved!")
+                st.experimental_rerun()
+
 
 
    
