@@ -438,12 +438,26 @@ Return just one word: handoff, general, or other.
             {"role": "user", "content": prompt}
         ])
         return response.strip().lower()
-    
+
     except Exception:
         lowered = user_input.lower()
+
+        # Handle negated cases (user says no to meeting)
+        negated_phrases = [
+            "don't want", "do not want", "dont want", 
+            "not interested", "no meeting", "no call", 
+            "not now", "no thanks", "no need", 
+            "just asking", "just curious", "i just want info"
+        ]
+
+        if any(neg in lowered for neg in negated_phrases):
+            return "general"
+
         if any(keyword in lowered for keyword in LIVE_CHAT_KEYWORDS):
             return "handoff"
+
         return "general"
+
 
 # ==============================================
 # OpenAI Communication Function (uses Chat API)
