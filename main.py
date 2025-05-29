@@ -589,6 +589,7 @@ st.markdown(
 # USER DETAIL INPUT SECTION
 # ============================
 if not st.session_state.get("chat_enabled", False):
+
     st.markdown('<div class="contact-header"><strong>Enter your contact details before chatting with our AI assistant:</strong></div>', unsafe_allow_html=True)
     st.markdown('<div class="contact-form">', unsafe_allow_html=True)
 
@@ -613,7 +614,7 @@ if not st.session_state.get("chat_enabled", False):
         if not is_valid_phone(phone):
             return "❌ Invalid phone number."
 
-        # ✅ Store inputs into session state
+        # ✅ Save to session state
         st.session_state.name = name
         st.session_state.email = email
         st.session_state.company = company
@@ -621,7 +622,7 @@ if not st.session_state.get("chat_enabled", False):
         st.session_state.country = country
         st.session_state.chat_enabled = True
 
-        # ✅ Log user data
+        # ✅ Log to Google Sheets
         log_to_google_sheets({
             "name": name,
             "email": email,
@@ -634,12 +635,14 @@ if not st.session_state.get("chat_enabled", False):
 
     if st.button("Submit Details", key="submit_button"):
         message = validate_and_start()
-        st.success(message)
-        # Add welcome message to chat history
-        st.session_state.chat_history.append({
-            "role": "assistant",
-            "content": f"Hi {name}! I’m Terra, your virtual assistant. How can I help you today?"
-        })
+        if message.startswith("✅"):
+            st.success(message)
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "content": f"Hi {name}! I’m Terra, your virtual assistant. How can I help you today?"
+            })
+        else:
+            st.error(message)
 
    
 # ========================================================
