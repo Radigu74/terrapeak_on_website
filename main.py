@@ -422,7 +422,8 @@ LIVE_CHAT_KEYWORDS = [
 def detect_intent(user_input: str) -> str:
     system_msg = (
         "You are an assistant that classifies the intent of a user's message. "
-        "Return only one of the following: 'handoff', 'general', or 'other'."
+        "Return only one of the following: 'handoff', 'general', or 'other'. "
+        "Only return 'handoff' if the user clearly asks to talk to a person, speak to a consultant, or requests a meeting."
     )
 
     prompt = f"""
@@ -437,26 +438,27 @@ Return just one word: handoff, general, or other.
             {"role": "system", "content": system_msg},
             {"role": "user", "content": prompt}
         ])
-        return response.strip().lower()
+        result = response.strip().lower()
+        if result not in ["handoff", "general", "other"]:
+            return "general"
+        return result
 
     except Exception:
         lowered = user_input.lower()
 
-        # Handle negated cases (user says no to meeting)
-        negated_phrases = [
-            "don't want", "do not want", "dont want", 
-            "not interested", "no meeting", "no call", 
-            "not now", "no thanks", "no need", 
-            "just asking", "just curious", "i just want info"
+        # STRICT keyword fallback only when no GPT available
+        live_chat_triggers = [
+            "i want to talk", "can i speak", "talk to someone", "speak to someone",
+            "contact consultant", "want a call", "need a meeting", "book a call",
+            "real person", "human support", "live chat", "contact support"
         ]
 
-        if any(neg in lowered for neg in negated_phrases):
-            return "general"
-
-        if any(keyword in lowered for keyword in LIVE_CHAT_KEYWORDS):
+        # Only trigger handoff if it's clearly asking for help
+        if any(trigger in lowered for trigger in live_chat_triggers):
             return "handoff"
 
         return "general"
+
 
 
 # ==============================================
