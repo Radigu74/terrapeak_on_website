@@ -679,6 +679,8 @@ if st.session_state.chat_enabled:
             </a>
             </div>"""
 
+            assistant_response = f"Absolutely, {user_name} I can connect you with one of our consultants:"
+
             with st.chat_message("assistant", avatar="🌍"):
                 st.markdown(f"Absolutely, {user_name} 👋 I can connect you with one of our consultants:", unsafe_allow_html=True)
                 st.markdown(styled_cta, unsafe_allow_html=True)
