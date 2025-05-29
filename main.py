@@ -50,7 +50,7 @@ div[data-testid="stChatMessage"] div:has(div:has(img[alt="🌍"])) > div:nth-chi
 
 /* === FORM POSITIONING === */
 .contact-header {
-    margin-top: -60px;
+    margin-top: -50px;
     padding-top: 0;
 }
 .contact-form {
